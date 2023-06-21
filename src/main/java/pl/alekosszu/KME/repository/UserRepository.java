@@ -1,11 +1,11 @@
 package pl.alekosszu.KME.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.alekosszu.KME.entity.user.User;
+import org.springframework.security.core.userdetails.User;
 
-import java.util.Optional;
+import javax.management.relation.Role;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByEmail(String email);
+    User findByUsername(String username);
 }

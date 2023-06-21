@@ -37,6 +37,7 @@ public class CategoryController {
         final List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         return "/category/list";
-
     }
+
+
 }

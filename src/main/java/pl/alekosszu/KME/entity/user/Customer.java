@@ -5,15 +5,15 @@ import lombok.*;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 
 
+import javax.management.relation.Role;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User{
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +22,6 @@ public class User{
     private String email;
     private String password;
 
-
-    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToOne
