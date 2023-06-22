@@ -4,10 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
@@ -15,9 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Setter
-@Getter
-@ToString
+@Data
 @NoArgsConstructor
 public class Schedule {
 
@@ -29,7 +24,7 @@ public class Schedule {
     private LocalTime startTime;
 
     @Column(name = "end_time")
-    private LocalDate endTime;
+    private LocalTime endTime;
 
     private LocalDate date;
 

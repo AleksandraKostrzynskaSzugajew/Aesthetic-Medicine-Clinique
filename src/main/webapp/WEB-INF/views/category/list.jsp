@@ -16,8 +16,9 @@
             <td>${category.id}</td>
             <td>${category.name}</td>
 
-<%--            <td><a href="<c:url value='/author/edit?id=${author.id}'/>">Edit</a></td>--%>
-<%--            <td><a href="<c:url value='/author/remove?id=${author.id}'/>" onclick="return confirm('Are you sure?')">Remove</a></td>--%>
+            <td><a href="<c:url value='/admin/category/edit?id=${category.id}'/>">Edit</a></td>
+            <td><a href="<c:url value='/admin/category/remove?id=${category.id}'/>" onclick="return confirm('Note that it may leave some of your treatments without a category. Are you sure?')">Remove</a></td>
+            <td><a href="<c:url value='/admin/category/save' />">Add new category</a></td>
         </tr>
     </c:forEach>
 </table>

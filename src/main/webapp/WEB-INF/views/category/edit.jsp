@@ -3,17 +3,19 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>Save category</title>
+    <title>Edit category</title>
 <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
 </head>
 <body>
 
-<h3>Save category</h3>
+<h3>Edit category</h3>
 
-<form:form method="post" action="saved" modelAttribute="category">
+<form:form method="post" action="edited" modelAttribute="category">
 
     <div>Category name: <form:input path="name"/></div>
-    <input type="submit" value="Add new category">
+    <form:hidden path="id"/>
+    <input type="submit" value="Update category">
+
 </form:form>
 
 </body>

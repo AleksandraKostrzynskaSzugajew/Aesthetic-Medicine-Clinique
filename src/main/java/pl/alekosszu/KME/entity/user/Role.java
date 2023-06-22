@@ -1,4 +1,4 @@
-package pl.alekosszu.KME.entity;
+package pl.alekosszu.KME.entity.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
