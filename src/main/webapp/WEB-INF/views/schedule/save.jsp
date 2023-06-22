@@ -64,7 +64,7 @@
     <div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" value="1" name="startTime"></div>
     <div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime">
     </div>
-
+    <form:hidden path="id"/>
     <input type="submit" value="Add new schedule item">
 </form:form>
 

@@ -44,7 +44,7 @@
             </c:forEach></td>
 
             <c:forEach var="scheduleItem" items="${employee.schedule}">
-                <p>${scheduleItem.getName()}</p>
+                <p>${scheduleItem}</p>
             </c:forEach>
 
 

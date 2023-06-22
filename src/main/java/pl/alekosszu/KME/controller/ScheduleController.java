@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Category;
 import pl.alekosszu.KME.repository.ScheduleRepository;
 import pl.alekosszu.KME.service.CategoryService;
+import pl.alekosszu.KME.service.EmployeeService;
 import pl.alekosszu.KME.service.ScheduleService;
 
 import java.time.LocalTime;
@@ -24,6 +26,7 @@ import java.util.List;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+    private final EmployeeService employeeService;
 
     @GetMapping("/save")
     public String saveScheduleForm(Model model) {
@@ -32,7 +35,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/saved")
-    public String scheduleItemSaved(Schedule schedule) {
+    public String scheduleItemSaved(Schedule schedule, Model model) {
         String startString = String.valueOf(schedule.getStartTime());
         String endString = String.valueOf(schedule.getEndTime());
         LocalTime start = LocalTime.parse(startString);
@@ -41,6 +44,8 @@ public class ScheduleController {
         schedule.setEndTime(end);
         scheduleService.save(schedule);
         System.out.println("Schedule saved");
+         List<Employee> employees = employeeService.findAll();
+        model.addAttribute("employees", employees);
         return "employee/list";
     }
 
