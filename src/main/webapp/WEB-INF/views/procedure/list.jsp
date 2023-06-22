@@ -10,15 +10,24 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Duration(min)</th>
+        <th>Cost</th>
+        <th>Category</th>
+        <th>Employees entitled to perform</th>
     </tr>
-    <c:forEach items="${categories}" var="category">
+    <c:forEach items="${procedures}" var="procedure">
         <tr>
-            <td>${category.id}</td>
-            <td>${category.name}</td>
+            <td>${procedure.id}</td>
+            <td>${procedure.name}</td>
+            <td>${procedure.duration}</td>
+            <td>${procedure.cost}</td>
+            <td>${procedure.category}</td>
+            <td>${procedure.employeesPerformingProcedure}</td>
 
-            <td><a href="<c:url value='/admin/category/edit?id=${category.id}'/>">Edit</a></td>
-            <td><a href="<c:url value='/admin/category/remove?id=${category.id}'/>" onclick="return confirm('Note that it may leave some of your treatments without a category. Are you sure?')">Remove</a></td>
-            <td><a href="<c:url value='/admin/category/save' />">Add new category</a></td>
+
+            <td><a href="<c:url value='/admin/procedure/edit?id=${procedure.id}'/>">Edit</a></td>
+            <td><a href="<c:url value='/admin/procedure/remove?id=${procedure.id}'/>" onclick="return confirm('Are you sure?')">Remove</a></td>
+            <td><a href="<c:url value='/admin/procedure/save' />">Add new procedure</a></td>
         </tr>
     </c:forEach>
 </table>

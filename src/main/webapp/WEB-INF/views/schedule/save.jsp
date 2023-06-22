@@ -36,7 +36,7 @@
 <%--                maxTime: '16:00', // Set maximum selectable time--%>
 <%--                dynamic: false, // Enable dynamic time scrolling--%>
 <%--                dropdown: true, // Show time dropdown instead of spinner--%>
-<%--                 timeFormat: 'HH:mm:ss'--%>
+<%--                 timeFormat: 'H:M:s'--%>
 <%--                // ...--%>
 <%--            });--%>
 
@@ -48,7 +48,7 @@
 <%--                maxTime: '18:00', // Set maximum selectable time--%>
 <%--                dynamic: false, // Enable dynamic time scrolling--%>
 <%--                dropdown: true, // Show time dropdown instead of spinner--%>
-<%--             timeFormat: 'HH:mm:ss'--%>
+<%--                timeFormat: 'H:M:s'--%>
 <%--            // ...--%>
 <%--        });--%>
 <%--        });--%>

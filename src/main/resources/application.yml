@@ -22,7 +22,7 @@ spring:
       password: prosiaczek
   sql:
     init:
-      data-locations: classpath:data.sql
+      data-locations: classpath:import.sql
 
 
 

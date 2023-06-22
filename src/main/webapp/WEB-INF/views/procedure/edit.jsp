@@ -16,12 +16,13 @@
     <div>Procedure duration: <form:input path="duration"/></div>
     <div>Procedure cost: <form:input path="cost"/></div>
 
-    <div>Category: <form:select path="category" items="${categories}" multiple="false"/></div>
-
-    <div>Employees entitled to perform procedure: <form:select path="employeesPerformingProcedure" items="${empForPro}"
-                                                               itemLabel="fullName" itemValue="id"
-                                                               multiple="true"/></div>
-
+    <div>Category:
+        <form:select  path="category">
+            <form:options items="${categories}" itemValue="id" itemLabel="name"></form:options>
+        </form:select></div>
+    <div>Employees entitled to perform procedure:     <form:select  path="employeesPerformingProcedure">
+        <form:options items="${empForPro}" itemValue="id" itemLabel="name"></form:options>
+    </form:select></div>
     <form:hidden path="id"/>
     <input type="submit" value="Update procedure">
 </form:form>

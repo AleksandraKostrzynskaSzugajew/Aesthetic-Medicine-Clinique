@@ -22,7 +22,7 @@ public class Procedure {
     private int duration; // in minutes
     private double cost;
 
-    @OneToOne
+    @ManyToOne
     private Category category;
 
     @ManyToMany

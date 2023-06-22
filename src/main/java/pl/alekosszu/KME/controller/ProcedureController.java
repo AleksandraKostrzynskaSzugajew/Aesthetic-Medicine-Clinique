@@ -5,7 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.alekosszu.KME.entity.employee.Employee;
+import pl.alekosszu.KME.entity.treatments.Category;
 import pl.alekosszu.KME.entity.treatments.Procedure;
+import pl.alekosszu.KME.service.CategoryService;
+import pl.alekosszu.KME.service.EmployeeService;
 import pl.alekosszu.KME.service.ProcedureService;
 
 import java.util.List;
@@ -17,24 +21,21 @@ import java.util.stream.Collectors;
 public class ProcedureController {
 
     private final ProcedureService procedureService;
+    private final CategoryService categoryService;
 
-
+    private final EmployeeService employeeService;
 
     @ModelAttribute("categories")
-    public List<String> categories() {
-        List<String> categoriesAsString =
-                procedureService.findAll().stream().map(spe -> spe.toString()).collect(Collectors.toList());
-        return categoriesAsString;
+    public List<Category> categories() {
+        return categoryService.findAll();
+
     }
+
 
     @ModelAttribute("empForPro")
-    public List<String> v() {
-        List<String> employeesForProcedure =
-                procedureService.findAll().stream().map(spe -> spe.toString()).collect(Collectors.toList());
-        return employeesForProcedure;
+    public List<Employee> employeesPerformingProcedure() {
+        return employeeService.findAll();
     }
-
-
 
 
     @GetMapping("/save")
