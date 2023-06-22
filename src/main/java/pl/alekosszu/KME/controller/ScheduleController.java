@@ -40,7 +40,8 @@ public class ScheduleController {
         schedule.setStartTime(start);
         schedule.setEndTime(end);
         scheduleService.save(schedule);
-        return "redirect:findall";
+        System.out.println("Schedule saved");
+        return "employee/list";
     }
 
     @GetMapping("/findall")

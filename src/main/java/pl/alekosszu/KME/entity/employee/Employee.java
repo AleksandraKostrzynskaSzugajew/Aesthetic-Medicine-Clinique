@@ -24,17 +24,13 @@ public class Employee {
     private String houseNumber;
     private String postcode;
     private String city;
+    private String phoneNumber1;
+    private String phoneNumber2;
 
 
     @OneToMany
     private Collection<Specialty> specialties;
 
-    //private COS SCHEDULE;
-
-
-
-    @OneToMany
-    private Collection<Phone> phoneNumbers;
 
     @ManyToMany
     private Collection<Procedure> performedProcedures;

@@ -3,14 +3,14 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>Save new employee</title>
+    <title>Edit employee</title>
     <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
 </head>
 <body>
 
-<h3>Save new employee</h3>
+<h3>Edit employee</h3>
 
-<form:form method="post" action="saved" modelAttribute="employee">
+<form:form method="post" action="edited" modelAttribute="employee">
 
     <div>First name: <form:input path="firstName"/></div>
     <div>Last name: <form:input path="lastName"/></div>
@@ -31,8 +31,9 @@
         <form:options items="${procedures}" itemValue="id" itemLabel="name"></form:options>
     </form:select></div>
 
+    <form:hidden path="id"/>
 
-    <input type="submit" value="Add new employee">
+    <input type="submit" value="Update employee">
 </form:form>
 
 </body>
