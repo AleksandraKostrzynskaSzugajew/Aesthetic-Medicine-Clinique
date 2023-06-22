@@ -20,6 +20,9 @@ spring:
     user:
       name: olala
       password: prosiaczek
+  sql:
+    init:
+      data-locations: classpath:data.sql
 
 
 

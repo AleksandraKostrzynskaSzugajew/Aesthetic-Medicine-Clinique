@@ -1,10 +1,7 @@
 package pl.alekosszu.KME.entity.treatments;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.treatments.Category;
 
@@ -12,10 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
 @Table(name = "treatment")
 public class Procedure {
 
@@ -26,7 +21,6 @@ public class Procedure {
     private String name;
     private int duration; // in minutes
     private double cost;
-    private boolean isHospitalizationRequired;
 
     @OneToOne
     private Category category;
@@ -38,4 +32,6 @@ public class Procedure {
     public void addPersonPerformingProcedure(Employee employee){
         employeesPerformingProcedure.add(employee);
     }
+
+
 }

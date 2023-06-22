@@ -2,6 +2,7 @@ package pl.alekosszu.KME.entity.employee;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Phone;
 
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "employees")
+@Data
 public class Employee {
 
     @Id
@@ -18,8 +20,11 @@ public class Employee {
     private String firstName;
     private String lastName;
 
-    @OneToOne
-    private EmployeeData employeeData;
+    private String street;
+    private String houseNumber;
+    private String postcode;
+    private String city;
+
 
     @OneToMany
     private Collection<Specialty> specialties;
