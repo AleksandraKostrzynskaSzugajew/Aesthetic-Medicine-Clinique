@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import pl.alekosszu.KME.entity.treatments.Procedure;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,17 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String procedureName;
+
+    private String employeeName;
+
+
+
+
+
+
+
 
     private LocalDateTime createdTime;
 

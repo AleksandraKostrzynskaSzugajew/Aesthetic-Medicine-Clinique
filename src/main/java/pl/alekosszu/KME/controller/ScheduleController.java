@@ -36,11 +36,9 @@ public class ScheduleController {
     @PostMapping("/saved/{empId}")
     public String addScheduleItemToEmployee(Schedule schedule, Model model, @PathVariable Long empId) {
 
-
-        Long rp = empId;
+        schedule.setEmployeeId(empId);
         Employee employee = employeeService.findById(empId);
-        System.out.println(employee);
-        schedule.setEmployee(employee);
+
 
         String startString = String.valueOf(schedule.getStartTime());
         String endString = String.valueOf(schedule.getEndTime());
@@ -51,10 +49,10 @@ public class ScheduleController {
         scheduleService.save(schedule);
 
 
-        //employee.addToSchedule(schedule);
+        employee.addToSchedule(schedule);
 
 
-        System.out.println("Item for employee with id: " + employee.getId() + " saved");
+        System.out.println("Item for employee with id: " + empId + " saved");
         List<Employee> employees = employeeService.findAll();
         model.addAttribute("employees", employees);
         return "employee/list";

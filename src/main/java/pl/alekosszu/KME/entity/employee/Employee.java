@@ -4,7 +4,6 @@ package pl.alekosszu.KME.entity.employee;
 import jakarta.persistence.*;
 import lombok.Data;
 import pl.alekosszu.KME.entity.treatments.Procedure;
-import pl.alekosszu.KME.entity.user.Phone;
 
 import java.util.Collection;
 

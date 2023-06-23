@@ -43,15 +43,15 @@
                 <p>${procedure.getName()}</p>
             </c:forEach></td>
 
-            <c:forEach var="scheduleItem" items="${employee.schedule}">
-                <p>${scheduleItem}</p>
-            </c:forEach>
+            <td>
+                ${employee.schedule}
+            </td>
 
 
             <td><a href="<c:url value='/admin/emp/edit?id=${employee.id}'/>">Edit</a></td>
             <td><a href="<c:url value='/admin/emp/remove?id=${employee.id}'/>"
                    onclick="return confirm('Are you sure?')">Remove</a></td>
-            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}'/>">Add position to schedule</a></td>
+            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}'/>">Add position to schedule</a></td>chedule
 <%--            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}' />">Add position to schedule</a></td>--%>
         </tr>
 

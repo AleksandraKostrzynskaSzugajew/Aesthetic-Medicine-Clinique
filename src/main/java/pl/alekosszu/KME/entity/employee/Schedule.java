@@ -25,7 +25,6 @@ public class Schedule {
 
     private LocalDate date;
 
-    @ManyToOne //(cascade =CascadeType.PERSIST, mappedBy = "employee")
-    private Employee employee;
+    private Long employeeId;
 
 }

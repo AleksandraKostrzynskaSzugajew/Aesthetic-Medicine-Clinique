@@ -6,10 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.alekosszu.KME.entity.employee.Employee;
+import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.employee.Specialty;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.service.EmployeeService;
 import pl.alekosszu.KME.service.ProcedureService;
+import pl.alekosszu.KME.service.ScheduleService;
 import pl.alekosszu.KME.service.SpecialtyService;
 
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final SpecialtyService specialtyService;
     private final ProcedureService procedureService;
+    private final ScheduleService scheduleService;
+
+
 
 
     @ModelAttribute("specialties")
@@ -36,11 +41,18 @@ public class EmployeeController {
     public List<Procedure> procedures() {
         return procedureService.findAll();
     }
+//    @ModelAttribute("schedules")
+//    public List<Schedule> schedules() {
+//        return scheduleService.;
+//    }
+
+
 
 
     @GetMapping("/save")
     public String saveEmployeeForm(Model model) {
         model.addAttribute("employee", new Employee());
+
         return "employee/save";
     }
 
@@ -80,5 +92,6 @@ public class EmployeeController {
         employeeService.update(employee);
         return "redirect:findall";
     }
+
 
 }

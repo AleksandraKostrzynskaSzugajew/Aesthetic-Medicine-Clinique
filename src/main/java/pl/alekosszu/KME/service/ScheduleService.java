@@ -36,4 +36,8 @@ public class ScheduleService {
     public void deleteById(Long id) {
         scheduleRepository.deleteById(id);
     }
+
+    public List<Schedule> findByEmployeeId(Long id) {
+        return scheduleRepository.findByEmployeeId(id);
+    }
 }
