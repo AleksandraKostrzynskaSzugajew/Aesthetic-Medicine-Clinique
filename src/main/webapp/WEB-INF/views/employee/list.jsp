@@ -51,13 +51,13 @@
             <td><a href="<c:url value='/admin/emp/edit?id=${employee.id}'/>">Edit</a></td>
             <td><a href="<c:url value='/admin/emp/remove?id=${employee.id}'/>"
                    onclick="return confirm('Are you sure?')">Remove</a></td>
-            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}' />">Add position to schedule</a></td>
+            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}'/>">Add position to schedule</a></td>
+<%--            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}' />">Add position to schedule</a></td>--%>
         </tr>
+
+        <form:hidden path="id"/>
     </c:forEach>
 </table>
 <td><a href="<c:url value='/admin/emp/save' />">Add new employee</a></td>
-<%--<a href="<c:url value='/author/add'/>">Add new author</a>--%>
-<%--<a href="<c:url value='/author/search'/>">Search author</a>--%>
-<%--<a href="<c:url value='/author/list'/>">List of all authors</a>--%>
 </body>
 </html>

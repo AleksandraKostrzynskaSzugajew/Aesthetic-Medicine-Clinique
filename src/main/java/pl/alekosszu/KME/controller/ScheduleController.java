@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Category;
@@ -29,13 +26,22 @@ public class ScheduleController {
     private final EmployeeService employeeService;
 
     @GetMapping("/save")
-    public String saveScheduleForm(Model model) {
+    public String saveScheduleForm(Model model, @RequestParam Long id) {
         model.addAttribute("schedule", new Schedule());
+        //Employee employee = employeeService.findById(id); //to jest id pracownika
+        model.addAttribute("empId", id);
         return "schedule/save";
     }
 
-    @PostMapping("/saved")
-    public String scheduleItemSaved(Schedule schedule, Model model) {
+    @PostMapping("/saved/{empId}")
+    public String addScheduleItemToEmployee(Schedule schedule, Model model, @PathVariable Long empId) {
+
+
+        Long rp = empId;
+        Employee employee = employeeService.findById(empId);
+        System.out.println(employee);
+        schedule.setEmployee(employee);
+
         String startString = String.valueOf(schedule.getStartTime());
         String endString = String.valueOf(schedule.getEndTime());
         LocalTime start = LocalTime.parse(startString);
@@ -43,8 +49,13 @@ public class ScheduleController {
         schedule.setStartTime(start);
         schedule.setEndTime(end);
         scheduleService.save(schedule);
-        System.out.println("Schedule saved");
-         List<Employee> employees = employeeService.findAll();
+
+
+        //employee.addToSchedule(schedule);
+
+
+        System.out.println("Item for employee with id: " + employee.getId() + " saved");
+        List<Employee> employees = employeeService.findAll();
         model.addAttribute("employees", employees);
         return "employee/list";
     }

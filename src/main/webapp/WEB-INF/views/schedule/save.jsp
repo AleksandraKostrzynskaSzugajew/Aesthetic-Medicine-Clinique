@@ -55,16 +55,15 @@
 <%--</script>--%>
 
 
-
 <h3>Save schedule item</h3>
 
-<form:form method="post" action="saved" modelAttribute="schedule">
+<form:form method="post" action="saved/${empId}" modelAttribute="schedule">
 
     <div>Date: (yyyy-mm-dd) <input type="text" id="datepicker" name="date"></div>
     <div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" value="1" name="startTime"></div>
     <div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime">
     </div>
-    <form:hidden path="id"/>
+<%--    <form:hidden path="employee.id"/>--%>
     <input type="submit" value="Add new schedule item">
 </form:form>
 

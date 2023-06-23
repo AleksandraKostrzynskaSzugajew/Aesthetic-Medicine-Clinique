@@ -38,4 +38,8 @@ public class Employee {
     @OneToMany
     private Collection<Schedule> schedule;
 
+    public void addToSchedule(Schedule scheduleItem){
+        schedule.add(scheduleItem);
+    }
+
 }
