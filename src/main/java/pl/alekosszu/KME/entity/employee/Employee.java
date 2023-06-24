@@ -34,10 +34,10 @@ public class Employee {
     @ManyToMany
     private Collection<Procedure> performedProcedures;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Collection<Schedule> schedule;
 
-    public void addToSchedule(Schedule scheduleItem){
+    public void addToSchedule(Schedule scheduleItem) {
         schedule.add(scheduleItem);
     }
 

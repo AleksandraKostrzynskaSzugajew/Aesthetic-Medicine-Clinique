@@ -32,6 +32,7 @@ public class AppointmentController {
 
 
     @PostMapping("/appointments")
+    @ResponseBody
     public String createAppointment(@RequestParam("procedure") Long procedureId,
                                     @RequestParam("employee") Long employeeId,
                                     @RequestParam("date") LocalDate date,
@@ -47,25 +48,12 @@ public class AppointmentController {
 
         appointmentService.save(appointment);
 
-        if (employeeService.addAppointmentToSchedule(appointment, employeeId)) {
+        if (employeeService.addAppointmentToSchedule(appointment)) {
             return "user/appDemo";
         } else {
             appointmentService.deleteById(appointment.getId());
             return "redirect:appointments";
         }
 
-        // if termin dostepny
-
-
-        // Utwórz nową wizytę na podstawie przesłanych danych
-//        Appointment appointment = new Appointment();
-//        appointment.setProcedureName(zabiegService.getZabiegById(zabiegId));
-//        appointment.setOsoba(osobaService.getOsobaById(osobaId));
-//        appointment.setData(data);
-//        appointment.setGodzina(godzina);
-
-        // appointmentService.createAppointment(appointment);
-
-        // return "redirect:/success";
     }
 }

@@ -48,10 +48,10 @@ public class EmployeeService {
 //    public void findAllByProcedureId(Long id) { //moze szukac w zlej tabeli, nie tej laczonej, zapytanie w native sql?
 //    }
 
-    public boolean addAppointmentToSchedule(Appointment appointment, Long empId) {
+    public boolean addAppointmentToSchedule(Appointment appointment) {
 
-        Employee employee = employeeRepository.findById(empId).get();
-        List<Schedule> workdaysForEmp = scheduleService.findByEmployeeId(empId);
+        Employee employee = employeeRepository.findById(appointment.getEmployeeId()).get();
+      //  List<Schedule> workdaysForEmp = scheduleService.findByEmployeeId(appointment.getEmployeeId());
 
         LocalTime empStartTime;
         LocalTime appointmentStartTime = appointment.getStartTime();
@@ -63,11 +63,12 @@ public class EmployeeService {
         LocalTime maxEndTime;
 
 
-        for (Schedule scheduleItem : workdaysForEmp) {
+        for (Schedule scheduleItem : employee.getSchedule()) {
 
             empStartTime = scheduleItem.getStartTime();
             empEndTime = scheduleItem.getEndTime();
             maxEndTime = empEndTime.minus(duration);
+
             if (scheduleItem.getDate().equals(appointment.getDate())) {
 
                 if (appointmentStartTime.isAfter(empStartTime) && (appointmentEndTime.isBefore(maxEndTime)))
