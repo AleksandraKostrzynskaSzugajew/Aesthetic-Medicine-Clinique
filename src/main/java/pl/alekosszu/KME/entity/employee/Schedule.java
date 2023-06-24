@@ -3,10 +3,12 @@ package pl.alekosszu.KME.entity.employee;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import pl.alekosszu.KME.entity.user.Appointment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,5 +28,13 @@ public class Schedule {
     private LocalDate date;
 
     private Long employeeId;
+
+    @OneToMany
+    private List<Appointment> scheduledAppointments;
+
+    public void addToScheduledAppointments(Appointment appointment){
+        scheduledAppointments.add(appointment);
+
+    }
 
 }

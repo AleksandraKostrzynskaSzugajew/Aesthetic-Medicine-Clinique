@@ -41,10 +41,11 @@ public class EmployeeController {
     public List<Procedure> procedures() {
         return procedureService.findAll();
     }
-//    @ModelAttribute("schedules")
-//    public List<Schedule> schedules() {
-//        return scheduleService.;
-//    }
+
+    @ModelAttribute("schedules")
+    public List<Schedule> schedules() {
+        return scheduleService.findAll();
+    }
 
 
 
