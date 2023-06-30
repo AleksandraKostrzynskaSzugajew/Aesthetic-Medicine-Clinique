@@ -1,7 +1,6 @@
 package pl.alekosszu.KME.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,18 +41,17 @@ public class AppointmentController {
 
     @PostMapping("/appointments")
     @ResponseBody
-    public String createAppointment(@RequestParam("procedure") Long procedureId,
-                                    @RequestParam("employee") Long employeeId,
+    public String createAppointment(@RequestParam("procedureId") Long procedureId,
+                                    @RequestParam("employeeId") Long employeeId,
                                     @RequestParam("date") LocalDate date,
-                                    @RequestParam("startTime") LocalTime startTime,
-                                    @RequestParam("endTime") LocalTime endTime) {
+                                    @RequestParam("startTime") LocalTime startTime) {
 
         Appointment appointment = new Appointment();
         appointment.setProcedureId(procedureId);
         appointment.setEmployeeId(employeeId);
         appointment.setDate(date);
         appointment.setStartTime(startTime);
-        appointment.setEndTime(endTime);
+
 
         appointmentService.save(appointment);
 
@@ -69,30 +67,34 @@ public class AppointmentController {
     //endpoint dla pobierania listy zabiegow
     @GetMapping("/getprocedures")
     @ResponseBody
-    public String getAllProcedures() {
+    public List<Procedure> getAllProcedures() {
         List<Procedure> all =
                 procedureService.findAll();
-        return all.toString();
+        return all;
     }
 
     //endpoint dla pobierania listy lekarzy zaleznie od wybranego zabiegu
     @GetMapping("/getemployees")
     @ResponseBody
-    public String getEmployeesForProcedure(@RequestParam Long procId) {
+    public String getEmployeesForProcedure(@RequestParam Long procedureId) {
         Collection<Employee> all =
-                procedureService.findEmployeesPerformingProcedureById(procId);
+                procedureService.findEmployeesPerformingProcedureById(procedureId);
         return all.toString();
     }
 
+
+    //endpoint dla pobierania listy dat z grafiku konkretnego lekarza
     @GetMapping("/getdates")
     @ResponseBody
     public List<LocalDate> findScheduleDatesByEmployeeId(@RequestParam("employeeId") Long employeeId) {
         return scheduleService.findScheduleDatesByEmployeeId(employeeId);
     }
 
-
-    public String availableHours(Long procedureId, Long employeeId, LocalDate date) {
-//    public List<LocalTime> availableHours(Long procedureId, Long employeeId, LocalDate date) {
+    //pobieranie gostepnych godzin z grafiku konkretnego lekarza na konkretny dzien
+    @GetMapping("/gah")
+    @ResponseBody
+    //public String availableHours(@RequestParam Long procedureId, @RequestParam Long employeeId, @RequestParam LocalDate date) {
+    public List<LocalTime> availableHours(Long procedureId, Long employeeId, LocalDate date) {
 
         // LocalDate desiredDate = LocalDate.now(); // Określam dzień na ktory chce umowic
 
@@ -101,9 +103,9 @@ public class AppointmentController {
         Long duration = procedureToPlan.getDuration().toMinutes();// Określ czas trwania zabiegu
         int durationAsInt = Integer.valueOf(Math.toIntExact(duration));
 
-        LocalTime minTime = employeeService.FindScheduleByDate(date).getStartTime(); // Określ minimalną godzinę pracy lekarza
-        LocalTime maxTime = employeeService.FindScheduleByDate(date).getEndTime(); // Określ minimalną godzinę pracy lekarza
-        Duration interval = Duration.ofMinutes(10); // Określ interwał czasowy (np. 30 minut)
+        LocalTime minTime = employeeService.FindScheduleByDate(employeeId, date).getStartTime(); // Określ minimalną godzinę pracy lekarza
+        LocalTime maxTime = employeeService.FindScheduleByDate(employeeId, date).getEndTime(); // Określ minimalną godzinę pracy lekarza
+        Duration interval = Duration.ofMinutes(30); // Określ interwał czasowy (np. 30 minut)
 
         List<LocalTime> availableTimes = new ArrayList<>();
 
@@ -122,11 +124,7 @@ public class AppointmentController {
             currentTime = currentTime.plus(interval);
         }
 
-// Dostępne godziny do zapisania zabiegu
-//        for (LocalTime availableTime : availableTimes) {
-//            System.out.println(availableTime);
-//        }
-        return availableTimes.toString();
+        return availableTimes;
 
     }
 

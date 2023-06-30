@@ -10,5 +10,6 @@ import java.time.LocalDate;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 
-    Schedule FindScheduleByDate(LocalDate date);
+    @Query("SELECT s FROM Employee e JOIN e.schedule s WHERE e.id = :employeeId AND s.date = :date")
+    Schedule findScheduleByDate(Long employeeId, LocalDate date);
 }

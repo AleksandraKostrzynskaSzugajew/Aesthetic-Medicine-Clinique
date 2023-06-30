@@ -16,6 +16,13 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+    static-path-pattern: /**
+  resources:
+    chain:
+      strategy:
+        content:
+          mime-types:
+            js: text/javascript
   security:
     user:
       name: olala
@@ -23,6 +30,12 @@ spring:
   sql:
     init:
       data-locations: classpath:import.sql
+  web:
+    resources:
+      chain:
+        strategy:
+          content:
+            enabled: true
 
 
 

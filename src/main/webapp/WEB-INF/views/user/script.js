@@ -3,18 +3,34 @@ window.addEventListener('DOMContentLoaded', () => {
     const reservationForm = document.getElementById('reservationForm');
     const procedureSelect = document.getElementById('procedure');
     const doctorSelect = document.getElementById('doctor');
+    const daySelect = document.getElementById('day');
+    const hourSelect = document.getElementById('hour');
+
 
     // Funkcja do pobierania listy zabiegów z backendu
     function fetchProcedures() {
-        return fetch('/api/procedures') // Endpoint do pobrania listy zabiegów
+        return fetch('/user/createappointment/getprocedures') // Endpoint do pobrania listy zabiegów
             .then(response => response.json());
     }
 
     // Funkcja do pobierania listy lekarzy na podstawie wybranego zabiegu
     function fetchDoctors(procedureId) {
-        return fetch(`/api/doctors?procedureId=${procedureId}`) // Endpoint do pobrania listy lekarzy dla konkretnego zabiegu
+        return fetch(`/user/createappointment/getemployees?procedureId=${procedureId}`) // Endpoint do pobrania listy lekarzy dla konkretnego zabiegu
             .then(response => response.json());
     }
+
+    // Funkcja do pobierania listy dni pracujacych dla danego pracownika
+    function fetchDoctorsWorkingDays(employeeId) {
+        return fetch(`/user/createappointment/getdates?employeeId=${employeeId}`) // Endpoint do pobrania listy dat dla konkretnego lekarza
+            .then(response => response.json());
+    }
+
+    // Funkcja do pobierania listy dostepnych godzin dla wybranego pracownika
+    function fetchDoctorsAvailableHours(procedureId, employeeId, date) {
+        return fetch(`/user/createappointment/gah?procedureId=${procedureId}&employeeId=${employeeId}&date=${date}`) // Endpoint do pobrania listy dat dla konkretnego lekarza
+            .then(response => response.json());
+    }
+
 
     // Funkcja do aktualizacji listy opcji w polu wyboru
     function updateSelect(selectElement, options) {
@@ -36,19 +52,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Pobierz wartości pól formularza
         const procedureId = procedureSelect.value;
-        const doctorId = doctorSelect.value;
-        const date = document.getElementById('date').value;
+        const employeeId = doctorSelect.value;
+        const date = daySelect.value;
+        const startTime = hourSelect.value;
 
         // Wyślij dane do backendu
-        fetch('/api/reservation', {
+        fetch('/user/createappointment/appointments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 procedureId,
-                doctorId,
-                date
+                empoloyeeId,
+                date,
+                startTime
             })
         })
             .then(response => {

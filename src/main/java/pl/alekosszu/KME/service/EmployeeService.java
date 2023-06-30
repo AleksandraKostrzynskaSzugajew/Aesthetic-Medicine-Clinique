@@ -23,7 +23,7 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final ScheduleService scheduleService;
+    private final ProcedureService procedureService;
 
     public void save(Employee employee) {
         employeeRepository.save(employee);
@@ -50,18 +50,19 @@ public class EmployeeService {
 //    }
 
     public boolean addAppointmentToSchedule(Appointment appointment) {
-
+        Procedure procedureToCountDuration = procedureService.findById(appointment.getProcedureId());
         Employee employee = employeeRepository.findById(appointment.getEmployeeId()).get();
       //  List<Schedule> workdaysForEmp = scheduleService.findByEmployeeId(appointment.getEmployeeId());
 
         LocalTime empStartTime;
         LocalTime appointmentStartTime = appointment.getStartTime();
         LocalTime empEndTime;
-        LocalTime appointmentEndTime = appointment.getEndTime();
+        LocalTime appointmentEndTime = appointmentStartTime.plusMinutes(procedureToCountDuration.getDuration().toMinutes());
         Duration duration = Duration.between(appointmentStartTime, appointmentEndTime);
         long durationAsLong = duration.toMinutes();
 
         LocalTime maxEndTime;
+
 
 
         for (Schedule scheduleItem : employee.getSchedule()) {
@@ -89,8 +90,8 @@ public class EmployeeService {
 //        return (List<Employee>) employeeRepository.findAllByPerformedProcedures(id);
 //    }
 
-    public Schedule FindScheduleByDate(LocalDate date){
-       return employeeRepository.FindScheduleByDate(date);
+    public Schedule FindScheduleByDate(Long employeeId, LocalDate date){
+       return employeeRepository.findScheduleByDate(employeeId, date);
     };
 
 
