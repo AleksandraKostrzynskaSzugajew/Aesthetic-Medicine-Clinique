@@ -36,6 +36,6 @@ For which procedure would you like to make an appointment?
     <button type="submit">Zarezerwuj</button>
 </form>
 
-<script src="script.js"></script>
+<script src="/js/script.js"></script>
 </body>
 </html>

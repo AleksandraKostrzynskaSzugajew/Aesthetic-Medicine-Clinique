@@ -39,7 +39,7 @@ public class ProcedureService {
         procedureRepository.deleteById(id);
     }
 
-    public Collection<Employee> findEmployeesPerformingProcedureById(@Param("procedureId") Long procedureId) {
+    public Collection<Employee> findEmployeesPerformingProcedureById(Long procedureId) {
         return procedureRepository.findEmployeesPerformingProcedureById(procedureId);
     }
 

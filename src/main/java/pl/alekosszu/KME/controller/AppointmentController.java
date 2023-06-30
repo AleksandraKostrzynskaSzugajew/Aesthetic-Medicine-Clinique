@@ -76,6 +76,7 @@ public class AppointmentController {
     //endpoint dla pobierania listy lekarzy zaleznie od wybranego zabiegu
     @GetMapping("/getemployees")
     @ResponseBody
+   // public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
     public String getEmployeesForProcedure(@RequestParam Long procedureId) {
         Collection<Employee> all =
                 procedureService.findEmployeesPerformingProcedureById(procedureId);

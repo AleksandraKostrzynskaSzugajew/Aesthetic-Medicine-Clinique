@@ -11,18 +11,17 @@ spring:
       hibernate:
         format_sql: true
     database: mysql
-    #database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   mvc:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
     static-path-pattern: /**
-  resources:
-    chain:
-      strategy:
-        content:
-          mime-types:
-            js: text/javascript
+    resources:
+      chain:
+        strategy:
+          content:
+            mime-types:
+              js: application/javascript
   security:
     user:
       name: olala
@@ -36,6 +35,3 @@ spring:
         strategy:
           content:
             enabled: true
-
-
-
