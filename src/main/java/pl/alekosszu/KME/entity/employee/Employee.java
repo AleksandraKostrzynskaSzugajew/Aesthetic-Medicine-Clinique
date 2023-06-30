@@ -37,6 +37,7 @@ public class Employee {
     @OneToMany(fetch = FetchType.EAGER)
     private Collection<Schedule> schedule;
 
+
     public void addToSchedule(Schedule scheduleItem) {
         schedule.add(scheduleItem);
     }

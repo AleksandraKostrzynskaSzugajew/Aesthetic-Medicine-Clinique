@@ -29,6 +29,7 @@ public class Schedule {
 
     private Long employeeId;
 
+    //tu zamienic na mape jak sie da
     @OneToMany
     private List<Appointment> scheduledAppointments;
 

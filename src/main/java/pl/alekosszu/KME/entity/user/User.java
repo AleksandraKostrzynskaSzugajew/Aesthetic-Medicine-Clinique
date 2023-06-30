@@ -3,7 +3,6 @@ package pl.alekosszu.KME.entity.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.alekosszu.KME.entity.treatments.Procedure;
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -36,15 +34,19 @@ public class User {
     private String phoneNumber1;
     private String phoneNumber2;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Procedure> wishList;
 
 //    @ManyToMany
 //    private Collection<Procedure> history;
+
+    public void addRoleToUser(Role role){
+        roles.add(role);
+    }
 
 
 }

@@ -27,3 +27,7 @@ insert into employees(city, first_name, last_name) VALUE ("warsaw", "Adam", "kot
 
 # insert into schedule (date, end_time, start_time, employee_id
 # ) values ("2023-07-21", "17:00", "10:00", 1);
+
+insert into role(name) values("admin");
+insert into role(name) values("user");
+insert into role(name) values("employee");
