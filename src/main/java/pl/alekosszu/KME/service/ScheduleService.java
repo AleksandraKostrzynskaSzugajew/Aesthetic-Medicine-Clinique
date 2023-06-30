@@ -2,12 +2,18 @@ package pl.alekosszu.KME.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.employee.Specialty;
+import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.repository.ScheduleRepository;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -16,6 +22,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+
 
     public void save(Schedule schedule) {
         scheduleRepository.save(schedule);
@@ -40,4 +47,19 @@ public class ScheduleService {
     public List<Schedule> findByEmployeeId(Long id) {
         return scheduleRepository.findByEmployeeId(id);
     }
+
+    public List<LocalDate> findScheduleDatesByEmployeeId(@Param("employeeId") Long employeeId) {
+        return scheduleRepository.findScheduleDatesByEmployeeId(employeeId);
+    }
+
+    ;
+
+    public List<LocalTime> findOccupiedTimes(@Param("employeeId") Long employeeId,
+                                             @Param("date") LocalDate date) {
+        return scheduleRepository.findOccupiedTimes(employeeId, date);
+    }
+
+    ;
+
+
 }

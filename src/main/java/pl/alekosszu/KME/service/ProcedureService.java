@@ -1,11 +1,14 @@
 package pl.alekosszu.KME.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.repository.ProcedureRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -35,4 +38,10 @@ public class ProcedureService {
     public void deleteById(Long id) {
         procedureRepository.deleteById(id);
     }
+
+    public Collection<Employee> findEmployeesPerformingProcedureById(@Param("procedureId") Long procedureId) {
+        return procedureRepository.findEmployeesPerformingProcedureById(procedureId);
+    }
+
+
 }

@@ -8,7 +8,10 @@ import pl.alekosszu.KME.entity.treatments.Category;
 import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.repository.AppointmentRepository;
 import pl.alekosszu.KME.repository.CategoryRepository;
+import pl.alekosszu.KME.repository.ScheduleRepository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -17,6 +20,7 @@ import java.util.List;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final ScheduleRepository scheduleRepository;
 
 
     public void save(Appointment appointment) {
@@ -39,6 +43,20 @@ public class AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+
+    public boolean isEnoughTimeAvailable(Long employeeId, LocalDate date, LocalTime startTime, int duration) {
+        List<LocalTime> occupiedTimes = scheduleRepository.findOccupiedTimes(employeeId, date);
+        LocalTime endTime = startTime.plusMinutes(duration);
+
+        for (LocalTime occupiedTime : occupiedTimes) {
+            LocalTime occupiedEndTime = occupiedTime.plusMinutes(duration);
+            if (startTime.isBefore(occupiedEndTime) && endTime.isAfter(occupiedTime)) {
+                return false; // Zajęte godziny się pokrywają
+            }
+        }
+
+        return true; // jest czas, mozna zapisywac
+    }
 
 
 }

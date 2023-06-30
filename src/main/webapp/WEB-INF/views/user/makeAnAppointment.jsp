@@ -7,28 +7,27 @@
 </head>
 <body>Welcome to appointment maker!</h1>
 
+<h1>Formularz rezerwacji wizyty</h1>
+
 For which procedure would you like to make an appointment?
-<br>
-<div><form:select  path="procedureToChoose">
-    <form:options items="${procedures}" itemValue="id" itemLabel="name"></form:options>
-</form:select></div>
 
-To which person would you like to go?
+<form id="reservationForm">
+    <label for="procedure">Zabieg:</label>
+    <select id="procedure" name="procedure">
+        <!-- Opcje pobierane dynamicznie za pomocą JavaScript -->
+    </select>
 
-<div><form:select  path="employeeToChoose">
-    <form:options items="${procedures}" itemValue="id" itemLabel="name"></form:options>
-</form:select></div>
+    <label for="doctor">Lekarz:</label>
+    <select id="doctor" name="doctor">
+        <!-- Opcje pobierane dynamicznie za pomocą JavaScript -->
+    </select>
 
-What time suits you best?
+    <label for="date">Data i godzina:</label>
+    <input type="date" id="date" name="date">
 
-<div><form:select  path="employeesSchedule">
-    <form:options items="${scheduleItems}" itemValue="id" itemLabel="name"></form:options>
-</form:select></div>
+    <button type="submit">Zarezerwuj</button>
+</form>
 
-
-<form:hidden path="id"/>
-<input type="submit" value="Update user">
-
-
+<script src="script.js"></script>
 </body>
 </html>

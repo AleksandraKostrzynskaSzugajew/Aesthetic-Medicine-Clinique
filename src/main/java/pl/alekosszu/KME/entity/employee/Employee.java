@@ -32,6 +32,9 @@ public class Employee {
 
 
     @ManyToMany
+    @JoinTable(name = "employee_procedure")
+//            joinColumns = @JoinColumn(name = "person_id"),
+//            inverseJoinColumns = @JoinColumn(name = "address_id"))
     private Collection<Procedure> performedProcedures;
 
     @OneToMany(fetch = FetchType.EAGER)

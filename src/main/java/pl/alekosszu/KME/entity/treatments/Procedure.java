@@ -5,6 +5,7 @@ import lombok.*;
 import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.treatments.Category;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -19,7 +20,7 @@ public class Procedure {
     private Long id;
 
     private String name;
-    private int duration; // in minutes
+    private Duration duration; // in minutes
     private double cost;
 
     @ManyToOne

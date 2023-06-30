@@ -31,3 +31,6 @@ insert into employees(city, first_name, last_name) VALUE ("warsaw", "Adam", "kot
 insert into role(name) values("admin");
 insert into role(name) values("user");
 insert into role(name) values("employee");
+
+
+insert into user (email, password) values("a@wp.pl", "$2a$10$aJ5N4DqDiO.OXDvEBPQDZu.PQKQfyMfQx.G1FikKOHHO/uOsuPpHy");

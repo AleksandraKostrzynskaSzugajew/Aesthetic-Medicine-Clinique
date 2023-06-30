@@ -13,6 +13,7 @@ import pl.alekosszu.KME.repository.EmployeeRepository;
 
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -83,6 +84,14 @@ public class EmployeeService {
         System.out.println("Choose another date or time");
         return false;
     }
+
+//    public List<Employee> findAllByPerformedProcedures(Long id){
+//        return (List<Employee>) employeeRepository.findAllByPerformedProcedures(id);
+//    }
+
+    public Schedule FindScheduleByDate(LocalDate date){
+       return employeeRepository.FindScheduleByDate(date);
+    };
 
 
 
