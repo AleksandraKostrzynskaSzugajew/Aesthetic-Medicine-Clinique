@@ -88,9 +88,9 @@ public class AppointmentController {
     //endpoint dla pobierania listy dat z grafiku konkretnego lekarza
     @GetMapping("/getdates")
     @ResponseBody
-    public List<LocalDate> findScheduleDatesByEmployeeId(@RequestParam("employeeId") Long employeeId) {
+    public List<String> findScheduleDatesByEmployeeId(@RequestParam("employeeId") Long employeeId) {
 
-        List<LocalDate> dates = scheduleService.findScheduleDatesByEmployeeId(employeeId);
+        List<String> dates = scheduleService.findScheduleNamesByEmployeeId(employeeId);
 
         System.out.println("==============================================");
         System.out.println(dates.toString());

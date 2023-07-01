@@ -15,9 +15,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findByEmployeeId(Long employeeId);
 
-  @Query("SELECT s.date FROM Schedule s WHERE s.employeeId = :employeeId")
-    //@Query("SELECT s FROM Schedule s WHERE s.employeeId = :employeeId")
-    List<LocalDate> findScheduleDatesByEmployeeId(@Param("employeeId") Long employeeId);
+//  @Query("SELECT s.date FROM Schedule s WHERE s.employeeId = :employeeId")
+//    List<LocalDate> findScheduleDatesByEmployeeId(@Param("employeeId") Long employeeId);
+
+    @Query("SELECT s.name FROM Schedule s WHERE s.employeeId = :employeeId")
+    List<String> findScheduleNamesByEmployeeId(@Param("employeeId") Long employeeId);
+
+
+
 
 
     @Query("SELECT s.startTime FROM Schedule s WHERE s.employeeId = :employeeId " +

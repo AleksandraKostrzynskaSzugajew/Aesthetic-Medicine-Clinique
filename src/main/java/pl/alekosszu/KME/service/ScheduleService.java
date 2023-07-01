@@ -48,11 +48,10 @@ public class ScheduleService {
         return scheduleRepository.findByEmployeeId(id);
     }
 
-    public List<LocalDate> findScheduleDatesByEmployeeId(@Param("employeeId") Long employeeId) {
-        return scheduleRepository.findScheduleDatesByEmployeeId(employeeId);
+    public List<String> findScheduleNamesByEmployeeId(@Param("employeeId") Long employeeId) {
+        return scheduleRepository.findScheduleNamesByEmployeeId(employeeId);
     }
 
-    ;
 
     public List<LocalTime> findOccupiedTimes(@Param("employeeId") Long employeeId,
                                              @Param("date") LocalDate date) {
