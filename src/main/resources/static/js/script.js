@@ -103,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Pobierz wartości pól formularza
         const procedureId = procedureSelect.value;
-        const employeeId = doctorSelect.value;
+        const selectedEmployeeId = doctorSelect.value;
         const date = daySelect.value;
         const startTime = hourSelect.value;
 
@@ -115,7 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
             },
             body: JSON.stringify({
                 procedureId,
-                empoloyeeId,
+                selectedEmployeeId,
                 date,
                 startTime
             })

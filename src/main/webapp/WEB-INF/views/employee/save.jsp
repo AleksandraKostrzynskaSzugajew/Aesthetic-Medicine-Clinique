@@ -19,7 +19,7 @@
     <div>Post code: <form:input path="postcode"/></div>
     <div>City: <form:input path="city"/></div>
 
-    <div>Specialties: <form:select  path="specialties">
+    <div>Specialties: <form:select path="specialties">
         <form:options items="${specialties}" itemValue="id" itemLabel="name"></form:options>
     </form:select></div>
 
@@ -27,9 +27,12 @@
     <div>Main phone number: <form:input path="phoneNumber1"/></div>
     <div>Emergency phone number: <form:input path="phoneNumber2"/></div>
 
-    <div>Performed procedures: <form:select  path="performedProcedures">
+    <div>Performed procedures: <form:select path="performedProcedures">
         <form:options items="${procedures}" itemValue="id" itemLabel="name"></form:options>
     </form:select></div>
+    <br>
+    <div>Name to be displayed: <form:input path="name"/></div>
+    <br>
 
 
     <input type="submit" value="Add new employee">

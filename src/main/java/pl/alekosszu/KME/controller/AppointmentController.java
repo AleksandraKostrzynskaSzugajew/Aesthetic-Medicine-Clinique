@@ -77,10 +77,14 @@ public class AppointmentController {
     @GetMapping("/getemployees")
     @ResponseBody
    // public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
-    public String getEmployeesForProcedure(@RequestParam Long procedureId) {
+    public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
         Collection<Employee> all =
                 procedureService.findEmployeesPerformingProcedureById(procedureId);
-        return all.toString();
+
+        System.out.println("==============================================");
+        System.out.println(all.toString());
+
+        return all;
     }
 
 

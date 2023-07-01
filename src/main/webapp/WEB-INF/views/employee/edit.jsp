@@ -30,7 +30,9 @@
     <div>Performed procedures: <form:select  path="performedProcedures">
         <form:options items="${procedures}" itemValue="id" itemLabel="name"></form:options>
     </form:select></div>
-
+    <br>
+    <div>Name to be displayed: <form:input path="name"/></div>
+    <br>
 
     <form:hidden path="id"/>
 

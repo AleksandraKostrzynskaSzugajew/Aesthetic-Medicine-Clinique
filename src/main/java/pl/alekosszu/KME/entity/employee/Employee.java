@@ -3,6 +3,7 @@ package pl.alekosszu.KME.entity.employee;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 
 import java.util.Collection;
@@ -26,6 +27,8 @@ public class Employee {
     private String phoneNumber1;
     private String phoneNumber2;
 
+    //na potrzeby formularza w js
+    private String name;
 
     @OneToMany
     private Collection<Specialty> specialties;

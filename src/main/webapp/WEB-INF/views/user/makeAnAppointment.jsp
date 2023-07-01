@@ -6,34 +6,41 @@
     <title>Appointment maker</title>
 </head>
 <body>
-<h1>Welcome to appointment maker!</h1>
+<h3>Welcome to appointment maker!</h3>
 
-<h1>Formularz rezerwacji wizyty</h1>
+<h5>Appointment reservation form</h5>
 
 For which procedure would you like to make an appointment?
 
 <form id="reservationForm">
-    <label for="procedure">Zabieg:</label>
+<%--    <label for="procedure">Treatment:</label>--%>
     <select id="procedure" name="procedure">
-        <option value="">Wybierz zabieg</option>
+        <option value="">Choose treatment</option>
     </select>
-
-    <label for="doctor">Lekarz:</label>
+    <br>
+<br>
+    Choose employee to perform procedure
+    <br>
+<%--    <label for="doctor">Employee:</label>--%>
     <select id="doctor" name="doctor">
-        <option value="">Wybierz osobę przeprowadzającą zabieg</option>
+        <option value="">Choose employee</option>
     </select>
-
-    <label for="day">Dzień:</label>
+    <br>
+<br>
+    Choose the most suitable day for your visit
+<%--    <label for="day">Dzień:</label>--%>
     <select id="day" name="day">
-        <option value="">Wybierz dzień</option>
+        <option value="">Choose day</option>
     </select>
-
-    <label for="hour">Godzina:</label>
+    <br>
+<br>
+    What time would be the best for you?
+<%--    <label for="hour">Godzina:</label>--%>
     <select id="hour" name="hour">
-        <option value="">Wybierz godzinę</option>
+        <option value="">Choose time</option>
     </select>
 
-    <button type="submit">Zarezerwuj</button>
+    <button type="submit">Create my appointment!</button>
 </form>
 
 <script src="/js/script.js"></script>
