@@ -61,7 +61,8 @@
 
     <div>Date: (yyyy-mm-dd) <input type="text" id="datepicker" name="date"></div>
     <div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" value="1" name="startTime"></div>
-    <div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime">
+    <div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime"><br>
+    <div>Date to be displayed: <input type="text" id="name" name="name">
     </div>
 <%--    <form:hidden path="employee.id"/>--%>
     <input type="submit" value="Add new schedule item">

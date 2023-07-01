@@ -29,7 +29,9 @@ public class Schedule {
 
     private Long employeeId;
 
-    //tu zamienic na mape jak sie da
+    //the same as date, must be included for js script
+    private String name;
+
     @OneToMany
     private List<Appointment> scheduledAppointments;
 

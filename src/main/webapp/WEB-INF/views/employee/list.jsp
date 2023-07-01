@@ -16,6 +16,7 @@
         <th>Specialties:</th>
         <th>Performed procedures:</th>
         <th>Schedule:</th>
+        <th>Appointments:</th>
     </tr>
     <c:forEach items="${employees}" var="employee">
         <tr>
@@ -43,10 +44,14 @@
                 <p>${procedure.getName()}</p>
             </c:forEach></td>
 
-            <td>
-        <tr> ${employee.schedule} :</tr>
+            <td><c:forEach var="item" items="${employee.schedule}">
+                <p>${schedule.getDate()}</p>
+            </c:forEach></td>
 
-        <tr>
+        <%--            <td>--%>
+<%--        <tr> ${employee.schedule.getDate()} :</tr>--%>
+
+<%--        <tr>--%>
 
             <td><c:forEach var="schedule" items="${employee.schedule}">
                 <p>${schedule.getScheduledAppointments()}</p>

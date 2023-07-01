@@ -81,9 +81,6 @@ public class AppointmentController {
         Collection<Employee> all =
                 procedureService.findEmployeesPerformingProcedureById(procedureId);
 
-        System.out.println("==============================================");
-        System.out.println(all.toString());
-
         return all;
     }
 
@@ -92,30 +89,37 @@ public class AppointmentController {
     @GetMapping("/getdates")
     @ResponseBody
     public List<LocalDate> findScheduleDatesByEmployeeId(@RequestParam("employeeId") Long employeeId) {
-        return scheduleService.findScheduleDatesByEmployeeId(employeeId);
+
+        List<LocalDate> dates = scheduleService.findScheduleDatesByEmployeeId(employeeId);
+
+        System.out.println("==============================================");
+        System.out.println(dates.toString());
+        return dates;
     }
 
     //pobieranie gostepnych godzin z grafiku konkretnego lekarza na konkretny dzien
     @GetMapping("/gah")
     @ResponseBody
     //public String availableHours(@RequestParam Long procedureId, @RequestParam Long employeeId, @RequestParam LocalDate date) {
-    public List<LocalTime> availableHours(Long procedureId, Long employeeId, LocalDate date) {
+    public List<LocalTime> availableHours(Long procedureId, Long employeeId, String date) {
 
         // LocalDate desiredDate = LocalDate.now(); // Określam dzień na ktory chce umowic
+
+        LocalDate dateAsLD= LocalDate.parse(date);
 
         Procedure procedureToPlan = procedureService.findById(procedureId);
         Employee employeeToSearchForTime = employeeService.findById(employeeId);
         Long duration = procedureToPlan.getDuration().toMinutes();// Określ czas trwania zabiegu
         int durationAsInt = Integer.valueOf(Math.toIntExact(duration));
 
-        LocalTime minTime = employeeService.FindScheduleByDate(employeeId, date).getStartTime(); // Określ minimalną godzinę pracy lekarza
-        LocalTime maxTime = employeeService.FindScheduleByDate(employeeId, date).getEndTime(); // Określ minimalną godzinę pracy lekarza
+        LocalTime minTime = employeeService.FindScheduleByDate(employeeId, dateAsLD).getStartTime(); // Określ minimalną godzinę pracy lekarza
+        LocalTime maxTime = employeeService.FindScheduleByDate(employeeId, dateAsLD).getEndTime(); // Określ minimalną godzinę pracy lekarza
         Duration interval = Duration.ofMinutes(30); // Określ interwał czasowy (np. 30 minut)
 
         List<LocalTime> availableTimes = new ArrayList<>();
 
         // Pobierz zajęte godziny z grafiku na żądany dzień
-        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, date);
+        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, dateAsLD);
 
         LocalTime startTime = LocalTime.MIN;
 
@@ -123,7 +127,7 @@ public class AppointmentController {
         while (currentTime.isBefore(maxTime)) {
             if (!occupiedTimes.contains(currentTime)
                     && appointmentService.isEnoughTimeAvailable
-                    (employeeId, date, startTime, durationAsInt)) {
+                    (employeeId, dateAsLD, startTime, durationAsInt)) {
                 availableTimes.add(currentTime);
             }
             currentTime = currentTime.plus(interval);

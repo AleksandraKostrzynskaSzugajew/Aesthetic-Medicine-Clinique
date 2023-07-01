@@ -15,7 +15,9 @@
     <div>Date: (yyyy-mm-dd) <form:input path="date"/></div>
     <div>Start time: (hh:mm:ss) <form:input path="startTime"/></div>
     <div>End time: (hh:mm:ss) <form:input path="endTime"/></div>
-    <form:hidden path="id"/>
+    <div>Date to be displayed: <form:input path="name"/></div>
+
+<form:hidden path="id"/>
     <input type="submit" value="Update schedule item">
 
 </form:form>
