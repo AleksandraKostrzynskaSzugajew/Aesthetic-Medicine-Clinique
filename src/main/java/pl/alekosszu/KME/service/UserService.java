@@ -50,16 +50,8 @@ public class UserService {
 
 
     public void registerNewUser(User user) {
-        User userToRegister = new User();
         user.setEmail(user.getEmail());
         user.setPassword(myPasswordEncoder.passwordEncoder().encode(user.getPassword()));
-
-        // Ustawienie domyślnych ról użytkownika, jeśli jest to wymagane
-
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(roleService.findByName("user"));
-        user.setRoles(roles);
-
         userRepository.save(user);
     }
 

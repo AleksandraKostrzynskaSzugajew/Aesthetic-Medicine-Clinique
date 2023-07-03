@@ -31,6 +31,10 @@
     </c:forEach>
 </table>
 
+<br>
+<br>
+<td><a href="<c:url value='/admin/home' />">Go back home</a></td>
+
 <%--<a href="<c:url value='/author/add'/>">Add new author</a>--%>
 <%--<a href="<c:url value='/author/search'/>">Search author</a>--%>
 <%--<a href="<c:url value='/author/list'/>">List of all authors</a>--%>

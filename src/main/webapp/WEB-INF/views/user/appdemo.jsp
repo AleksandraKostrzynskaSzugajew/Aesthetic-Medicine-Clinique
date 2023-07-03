@@ -10,11 +10,11 @@
 
 <h3>probny appointment</h3>
 
-<form:form method="post" action="appointments">
+<h3>
+    made it to the user default
+</h3>
 
-    <div>Category name: <form:input path="name"/></div>
-    <input type="submit" value="Add new category">
-</form:form>
+
 
 </body>
 </html>

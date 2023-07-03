@@ -31,7 +31,7 @@ public class AppointmentController {
     private final ProcedureService procedureService;
     private final ScheduleService scheduleService;
 
-    @GetMapping("/apposave")
+    @GetMapping("/appointments")
     public String showAppointmentForm(Model model) {
         // 1. Pobierze listę dostępnych zabiegów
         List<Appointment> availableProcedures = appointmentService.findAll();
@@ -40,12 +40,12 @@ public class AppointmentController {
     }
 
 
-    @PostMapping("/appointments")
+    @PostMapping("/apposave")
     @ResponseBody
-    public String createAppointment(@RequestParam("procedureId") Long procedureId,
-                                    @RequestParam("employeeId") Long employeeId,
-                                    @RequestParam("date") LocalDate date,
-                                    @RequestParam("startTime") LocalTime startTime) {
+    public String createAppointment(@RequestParam(name="procedure") Long procedureId,
+                                    @RequestParam(name="doctor") Long employeeId,
+                                    @RequestParam(name="day") LocalDate date,
+                                    @RequestParam(name="hour") LocalTime startTime) {
 
         Appointment appointment = new Appointment();
         appointment.setProcedureId(procedureId);

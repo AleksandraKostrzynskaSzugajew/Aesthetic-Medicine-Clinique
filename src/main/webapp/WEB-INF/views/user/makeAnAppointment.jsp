@@ -12,7 +12,7 @@
 
 For which procedure would you like to make an appointment?
 
-<form id="reservationForm">
+<form id="reservationForm" action="/user/createappointment/apposave" method="post">
 <%--    <label for="procedure">Treatment:</label>--%>
     <select id="procedure" name="procedure">
         <option value="">Choose treatment</option>

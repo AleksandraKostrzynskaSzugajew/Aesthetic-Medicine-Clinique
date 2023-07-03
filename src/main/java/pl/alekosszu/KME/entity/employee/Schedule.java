@@ -5,6 +5,10 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import pl.alekosszu.KME.entity.user.Appointment;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,22 +24,31 @@ public class Schedule {
     private Long id;
 
     @Column(name = "start_time")
+    @NotNull
+    @Future
     private LocalTime startTime;
 
     @Column(name = "end_time")
+    @NotNull
+    @Future
     private LocalTime endTime;
 
+    @NotNull
+    @Future
     private LocalDate date;
 
+    @NotNull
     private Long employeeId;
 
     //the same as date, must be included for js script
+    @NotBlank
+    @Size(min = 5)
     private String name;
 
     @OneToMany
     private List<Appointment> scheduledAppointments;
 
-    public void addToScheduledAppointments(Appointment appointment){
+    public void addToScheduledAppointments(Appointment appointment) {
         scheduledAppointments.add(appointment);
 
     }

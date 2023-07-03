@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -20,6 +21,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Pattern(regexp = "/^((?!\\.)[\\w-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$")
     private String email;
     private String password;
 
@@ -34,9 +37,8 @@ public class User {
     private String phoneNumber1;
     private String phoneNumber2;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
-
+    @ManyToOne
+    private Role role;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Procedure> wishList;
@@ -44,9 +46,6 @@ public class User {
 //    @ManyToMany
 //    private Collection<Procedure> history;
 
-    public void addRoleToUser(Role role){
-        roles.add(role);
-    }
 
 
 }

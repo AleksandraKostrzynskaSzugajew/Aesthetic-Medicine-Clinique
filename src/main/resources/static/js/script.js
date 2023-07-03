@@ -74,37 +74,37 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     // Obsługa zdarzenia wysłania formularza
-    reservationForm.addEventListener('submit', event => {
-        event.preventDefault();
-
-        // Pobierz wartości pól formularza
-        const procedureId = procedureSelect.value;
-        const employeeId = doctorSelect.value;
-        const date = daySelect.value;
-        const startTime = hourSelect.value;
-
-        // Wyślij dane do backendu
-        fetch(`/user/createappointment/apposave?procedureId=${procedureId}&employeeId=${employeeId}&date=${date}&startTime=${startTime}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                procedureId,
-                employeeId,
-                date,
-                startTime
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Pomyślnie zarezerwowano wizytę
-                    alert('Wizyta została zarezerwowana!');
-                    reservationForm.reset();
-                } else {
-                    // Błąd podczas rezerwacji wizyty
-                    alert('Wystąpił błąd podczas rezerwacji wizyty');
-                }
-            });
-    });
+    // reservationForm.addEventListener('submit', event => {
+    //     event.preventDefault();
+    //
+    //     // Pobierz wartości pól formularza
+    //     const procedureId = procedureSelect.value;
+    //     const employeeId = doctorSelect.value;
+    //     const date = daySelect.value;
+    //     const startTime = hourSelect.value;
+    //
+    //     // Wyślij dane do backendu
+    //     fetch(`/user/createappointment/apposave?procedureId=${procedureId}&employeeId=${employeeId}&date=${date}&startTime=${startTime}`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             procedureId,
+    //             employeeId,
+    //             date,
+    //             startTime
+    //         })
+    //     })
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 // Pomyślnie zarezerwowano wizytę
+    //                 alert('Wizyta została zarezerwowana!');
+    //                 reservationForm.reset();
+    //             } else {
+    //                 // Błąd podczas rezerwacji wizyty
+    //                 alert('Wystąpił błąd podczas rezerwacji wizyty');
+    //             }
+    //         });
+    // });
 })

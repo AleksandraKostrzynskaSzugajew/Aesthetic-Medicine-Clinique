@@ -1,20 +1,27 @@
 package pl.alekosszu.KME.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import pl.alekosszu.KME.entity.user.Role;
 import pl.alekosszu.KME.entity.user.User;
+import pl.alekosszu.KME.service.RoleService;
 import pl.alekosszu.KME.service.UserService;
 
 @Controller
 public class RegistrationController {
 
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
+    private final RoleService roleService;
+
+    public RegistrationController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
     @GetMapping("/register")
     public String goToRegisterForm(Model model){
@@ -24,6 +31,8 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user) {
+        Role role = roleService.findByName("user");
+        user.setRole(role);
         userService.registerNewUser(user);
 
         //if register successfull

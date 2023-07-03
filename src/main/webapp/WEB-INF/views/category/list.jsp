@@ -18,10 +18,19 @@
 
             <td><a href="<c:url value='/admin/category/edit?id=${category.id}'/>">Edit</a></td>
             <td><a href="<c:url value='/admin/category/remove?id=${category.id}'/>" onclick="return confirm('Note that it may leave some of your treatments without a category. Are you sure?')">Remove</a></td>
-            <td><a href="<c:url value='/admin/category/save' />">Add new category</a></td>
         </tr>
     </c:forEach>
 </table>
+<br>
+<br>
+<br>
+<td><a href="<c:url value='/admin/category/save' />">Add new category</a></td>
+
+<br>
+<br>
+<td><a href="<c:url value='/admin/home' />">Go back home</a></td>
+
+
 
 <%--<a href="<c:url value='/author/add'/>">Add new author</a>--%>
 <%--<a href="<c:url value='/author/search'/>">Search author</a>--%>

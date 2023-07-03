@@ -27,13 +27,16 @@
 
             <td><a href="<c:url value='/admin/procedure/edit?id=${procedure.id}'/>">Edit</a></td>
             <td><a href="<c:url value='/admin/procedure/remove?id=${procedure.id}'/>" onclick="return confirm('Are you sure?')">Remove</a></td>
-            <td><a href="<c:url value='/admin/procedure/save' />">Add new procedure</a></td>
         </tr>
     </c:forEach>
 </table>
 
-<%--<a href="<c:url value='/author/add'/>">Add new author</a>--%>
-<%--<a href="<c:url value='/author/search'/>">Search author</a>--%>
-<%--<a href="<c:url value='/author/list'/>">List of all authors</a>--%>
+<br>
+<br>
+<td><a href="<c:url value='/admin/procedure/save' />">Add new procedure</a></td>
+<br>
+<br>
+<td><a href="<c:url value='/admin/home' />">Go back home</a></td>
+
 </body>
 </html>

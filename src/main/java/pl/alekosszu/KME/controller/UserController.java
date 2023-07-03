@@ -9,6 +9,7 @@ import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Specialty;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
+import pl.alekosszu.KME.entity.user.Role;
 import pl.alekosszu.KME.entity.user.User;
 import pl.alekosszu.KME.service.*;
 
@@ -22,6 +23,7 @@ public class UserController {
     private final UserService userService;
     private final ProcedureService procedureService;
     private final EmployeeService employeeService;
+    private final RoleService roleService;
 
 
     @GetMapping("/save")
@@ -32,6 +34,8 @@ public class UserController {
 
     @PostMapping("/saved")
     public String userSaved(User user) {
+        Role role = roleService.findByName("user");
+        user.setRole(role);
         userService.save(user);
         return "redirect:findall";
     }
@@ -67,18 +71,10 @@ public class UserController {
         return "redirect:findall";
     }
 
-    @GetMapping("/makeanappointment")
-    public String makeAnAppointment(Model model){
-        model.addAttribute("appointment", new Appointment());
 
-        List<Procedure> procedureToChoose = procedureService.findAll();
-        model.addAttribute("procedureToChoose", procedureToChoose);
-
-        List<Employee> employeeToChoose = employeeService.findAll();
-        model.addAttribute("employeeToChoose", employeeToChoose);
-
-
-        return "makeAnAppointment";
+    @GetMapping("/home")
+    public String welcomeHomeUser(){
+        return "user/appdemo";
     }
 
 

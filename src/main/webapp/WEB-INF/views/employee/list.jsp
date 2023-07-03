@@ -45,13 +45,9 @@
             </c:forEach></td>
 
             <td><c:forEach var="item" items="${employee.schedule}">
-                <p>${schedule.getDate()}</p>
+                <p>${item.getDate()}</p>
             </c:forEach></td>
 
-        <%--            <td>--%>
-<%--        <tr> ${employee.schedule.getDate()} :</tr>--%>
-
-<%--        <tr>--%>
 
             <td><c:forEach var="schedule" items="${employee.schedule}">
                 <p>${schedule.getScheduledAppointments()}</p>
@@ -65,13 +61,17 @@
         <td><a href="<c:url value='/admin/emp/remove?id=${employee.id}'/>"
                onclick="return confirm('Are you sure?')">Remove</a></td>
         <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}'/>">Add position to schedule</a></td>
-        chedule
-        <%--            <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}' />">Add position to schedule</a></td>--%>
+
         </tr>
 
         <form:hidden path="id"/>
     </c:forEach>
 </table>
+<br>
+<br>
+<td><a href="<c:url value='/admin/home' />">Go back home</a></td>
+<br>
+<br>
 <td><a href="<c:url value='/admin/emp/save' />">Add new employee</a></td>
 </body>
 </html>
