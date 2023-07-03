@@ -53,25 +53,43 @@ public class AppointmentService {
 
 
     public boolean isEnoughTimeAvailable(Long employeeId, Long scheduleId, Long procedureId) {
-
         Procedure procedure = procedureService.findById(procedureId);
         Schedule schedule = scheduleService.findById(scheduleId);
 
-        LocalDate date = schedule.getDate();
         LocalTime employeesStartTime = schedule.getStartTime();
-        List<LocalTime> occupiedTimes = scheduleRepository.findOccupiedTimes(employeeId, date);
-        LocalTime procedureEndTime = employeesStartTime.plusMinutes(procedure.getDuration());
+        LocalTime employeesEndTime = schedule.getEndTime();
 
+        // Oblicz czas trwania procedury w minutach
+        int procedureDuration = procedure.getDuration();
 
+        // Oblicz planowany czas zakończenia procedury
+        LocalTime procedureEndTime = employeesStartTime.plusMinutes(procedureDuration);
+
+        // Sprawdź, czy czas zakończenia procedury mieści się w ramach czasu pracy lekarza
+        boolean isWithinWorkingHours = procedureEndTime.isBefore(employeesEndTime);
+
+        if (!isWithinWorkingHours) {
+            return false; // Procedura kończy się poza godzinami pracy lekarza
+        }
+
+        // Pobierz zajęte godziny z grafiku na żądany dzień
+        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, schedule.getDate());
+
+        // Sprawdź, czy istnieje pokrywanie się zajętych godzin
         for (LocalTime occupiedTime : occupiedTimes) {
-            LocalTime occupiedEndTime = occupiedTime.plusMinutes(procedure.getDuration());
-            if (employeesStartTime.isBefore(occupiedEndTime) && procedureEndTime.isAfter(occupiedTime)) {
-                return false; // Zajęte godziny się pokrywają
+            LocalTime occupiedEndTime = occupiedTime.plusMinutes(procedureDuration);
+
+            // Sprawdź, czy czas rozpoczęcia lub zakończenia wizyty znajduje się w granicach czasu
+            if ((occupiedTime.isAfter(employeesStartTime) && occupiedTime.isBefore(procedureEndTime))
+                    || (occupiedEndTime.isAfter(employeesStartTime) && occupiedEndTime.isBefore(procedureEndTime))) {
+                return false; // Istnieje pokrywanie się wizyt w grafiku
             }
         }
 
-        return true; // jest czas, mozna zapisywac
+        return true; // Nie ma pokrywających się wizyt
     }
+
+
 
 
 }

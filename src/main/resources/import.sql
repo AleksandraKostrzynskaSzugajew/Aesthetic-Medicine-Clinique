@@ -35,3 +35,5 @@ insert into role(name) values("employee");
 
 
 insert into user (email, password) values("a@wp.pl", "$2a$10$aJ5N4DqDiO.OXDvEBPQDZu.PQKQfyMfQx.G1FikKOHHO/uOsuPpHy");
+
+

@@ -40,6 +40,8 @@ For which procedure would you like to make an appointment?
         <option value="">Choose time</option>
     </select>
 
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
     <button type="submit">Create my appointment!</button>
 </form>
 

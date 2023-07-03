@@ -31,7 +31,7 @@ public class AppointmentController {
     private final ProcedureService procedureService;
     private final ScheduleService scheduleService;
 
-    @GetMapping("/appointments")
+    @GetMapping("/apposave")
     public String showAppointmentForm(Model model) {
         // 1. Pobierze listę dostępnych zabiegów
         List<Appointment> availableProcedures = appointmentService.findAll();
@@ -53,15 +53,11 @@ public class AppointmentController {
         appointment.setDate(date);
         appointment.setStartTime(startTime);
 
-
+        employeeService.addAppointmentToSchedule(appointment);
         appointmentService.save(appointment);
 
-        if (employeeService.addAppointmentToSchedule(appointment)) {
-            return "user/appDemo";
-        } else {
-            appointmentService.deleteById(appointment.getId());
-            return "redirect:appointments";
-        }
+        return "redirect:appointments";
+
 
     }
 
@@ -77,7 +73,7 @@ public class AppointmentController {
     //endpoint dla pobierania listy lekarzy zaleznie od wybranego zabiegu
     @GetMapping("/getemployees")
     @ResponseBody
-   // public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
+    // public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
     public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
         Collection<Employee> all =
                 procedureService.findEmployeesPerformingProcedureById(procedureId);
@@ -107,54 +103,44 @@ public class AppointmentController {
     //pobieranie gostepnych godzin z grafiku konkretnego lekarza na konkretny dzien
     @GetMapping("/gah")
     @ResponseBody
-    //public String availableHours(@RequestParam Long procedureId, @RequestParam Long employeeId, @RequestParam LocalDate date) {
-    public List<LocalTime> availableHours(Long procedureId, Long employeeId, Long scheduleId) {
+    public List<LocalTime> getAvailableHours(Long procedureId, Long employeeId, Long scheduleId) {
+        Procedure procedure = procedureService.findById(procedureId);
+        Employee employee = employeeService.findById(employeeId);
 
+        // Pobierz grafik dla lekarza
+        Schedule schedule = scheduleService.findById(scheduleId);
 
+        // Pobierz zajęte godziny dla danego dnia
+        LocalDate date = schedule.getDate();
+        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, date);
 
-        // LocalDate desiredDate = LocalDate.now(); // Określam dzień na ktory chce umowic
+        // Określ minimalną i maksymalną godzinę pracy lekarza
+        LocalTime minTime = schedule.getStartTime();
+        LocalTime maxTime = schedule.getEndTime();
 
-        Schedule scheduleToLookForHours = scheduleService.findById(scheduleId);
-        LocalDate chosenDate= scheduleToLookForHours.getDate();
+        // Określ interwał czasowy (np. 30 minut)
+        Duration interval = Duration.ofMinutes(30);
 
-        Procedure procedureToPlan = procedureService.findById(procedureId);
-        Employee employeeToSearchForTime = employeeService.findById(employeeId);
-       // Określ czas trwania zabiegu
-        int durationAsInt = procedureToPlan.getDuration();
+        // Lista dostępnych godzin
+        List<LocalTime> availableHours = new ArrayList<>();
 
-        LocalTime minTime = employeeService.FindScheduleByDate(employeeId, chosenDate).getStartTime(); // Określ minimalną godzinę pracy lekarza
-        LocalTime maxTime = employeeService.FindScheduleByDate(employeeId, chosenDate).getEndTime(); // Określ minimalną godzinę pracy lekarza
-        Duration interval = Duration.ofMinutes(30); // Określ interwał czasowy (np. 30 minut)
-
-        List<LocalTime> availableTimes = new ArrayList<>();
-
-
-        // Pobierz zajęte godziny z grafiku na żądany dzień
-        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, chosenDate);
-
-        LocalTime startTime = LocalTime.MIN;
-
-
-        Employee emp = employeeService.findById(employeeId);
-        LocalTime doctorsEndTime = scheduleToLookForHours.getEndTime();
-        LocalTime employeesMaxTimeToStartProcedure = doctorsEndTime.minusMinutes(procedureToPlan.getDuration());
-
+        // Sprawdź każdą godzinę w przedziale od minTime do maxTime
         LocalTime timeOptionToAdd = minTime;
         while (timeOptionToAdd.isBefore(maxTime)) {
-            if (!occupiedTimes.equals(timeOptionToAdd)
-                    && appointmentService.isEnoughTimeAvailable
-                    (employeeId, scheduleId, procedureId)) {
-                availableTimes.add(timeOptionToAdd);
+            if (!occupiedTimes.contains(timeOptionToAdd) && appointmentService.isEnoughTimeAvailable(employeeId, schedule.getId(), procedureId)
+                    && (schedule.getEndTime().isAfter(timeOptionToAdd.plusMinutes(procedure.getDuration())) || schedule.getEndTime().equals(timeOptionToAdd.plusMinutes(procedure.getDuration())))) {
+                availableHours.add(timeOptionToAdd);
             }
             timeOptionToAdd = timeOptionToAdd.plus(interval);
         }
-
         System.out.println("===========================================================================");
-        System.out.println(availableTimes.toString());
+        System.out.println(availableHours.toString());
         System.out.println("===========================================================================");
 
-        return availableTimes;
+        return availableHours;
 
     }
 
+
 }
+

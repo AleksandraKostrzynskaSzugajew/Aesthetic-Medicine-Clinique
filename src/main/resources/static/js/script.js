@@ -20,6 +20,18 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function updateSelectHours(selectElement, hours) {
+        selectElement.innerHTML = '';
+
+        hours.forEach((hour, index) => {
+            const optionElement = document.createElement('option');
+            optionElement.value = index; // Ustawiamy wartość opcji jako indeks w tablicy
+            optionElement.textContent = hour; // Wykorzystujemy godzinę jako tekst opcji
+            selectElement.appendChild(optionElement);
+        });
+    }
+
+
 // Pobierz listę zabiegów z serwera i zaktualizuj pole wyboru "Zabieg"
     fetch('/user/createappointment/getprocedures')
         .then(response => response.json())
@@ -56,7 +68,7 @@ window.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(hours => {
                 console.log(hours)
-                updateSelect(hourSelect, hours);
+                updateSelectHours(hourSelect, hours);
             });
     });
 
@@ -67,19 +79,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Pobierz wartości pól formularza
         const procedureId = procedureSelect.value;
-        const selectedEmployeeId = doctorSelect.value;
+        const employeeId = doctorSelect.value;
         const date = daySelect.value;
         const startTime = hourSelect.value;
 
         // Wyślij dane do backendu
-        fetch('/user/createappointment/appointments', {
+        fetch(`/user/createappointment/apposave?procedureId=${procedureId}&employeeId=${employeeId}&date=${date}&startTime=${startTime}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 procedureId,
-                selectedEmployeeId,
+                employeeId,
                 date,
                 startTime
             })
@@ -91,8 +103,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     reservationForm.reset();
                 } else {
                     // Błąd podczas rezerwacji wizyty
-                    alert('Wystąpił błąd podczas rerezwacji wizyty')
+                    alert('Wystąpił błąd podczas rezerwacji wizyty');
                 }
-            })
-    })
-});
+            });
+    });
+})
