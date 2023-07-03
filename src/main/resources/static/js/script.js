@@ -51,51 +51,15 @@ window.addEventListener('DOMContentLoaded', () => {
     daySelect.addEventListener('change', () => {
         const selectedProcedureId = procedureSelect.value;
         const selectedEmployeeId = doctorSelect.value;
-        const selectedDate = daySelect.value;
-        fetch(`/user/createappointment/gah?procedureId=${selectedProcedureId}&employeeId=${selectedEmployeeId}&date=${selectedDate}`)
+        const scheduleId = daySelect.value;
+        fetch(`/user/createappointment/gah?procedureId=${selectedProcedureId}&employeeId=${selectedEmployeeId}&scheduleId=${scheduleId}`)
             .then(response => response.json())
             .then(hours => {
+                console.log(hours)
                 updateSelect(hourSelect, hours);
             });
     });
-    // // Funkcja do pobierania listy zabiegów z backendu
-    // function fetchProcedures() {
-    //     return fetch('/user/createappointment/getprocedures') // Endpoint do pobrania listy zabiegów
-    //         .then(response => response.json());
-    // }
-    //
-    // // Funkcja do pobierania listy lekarzy na podstawie wybranego zabiegu
-    // function fetchDoctors(procedureId) {
-    //     return fetch(`/user/createappointment/getemployees?procedureId=${procedureId}`) // Endpoint do pobrania listy lekarzy dla konkretnego zabiegu
-    //         .then(response => response.json());
-    // }
-    //
-    // // Funkcja do pobierania listy dni pracujacych dla danego pracownika
-    // function fetchDoctorsWorkingDays(employeeId) {
-    //     return fetch(`/user/createappointment/getdates?employeeId=${employeeId}`) // Endpoint do pobrania listy dat dla konkretnego lekarza
-    //         .then(response => response.json());
-    // }
-    //
-    // // Funkcja do pobierania listy dostepnych godzin dla wybranego pracownika
-    // function fetchDoctorsAvailableHours(procedureId, employeeId, date) {
-    //     return fetch(`/user/createappointment/gah?procedureId=${procedureId}&employeeId=${employeeId}&date=${date}`) // Endpoint do pobrania listy dat dla konkretnego lekarza
-    //         .then(response => response.json());
-    // }
-    //
-    //
-    // // Funkcja do aktualizacji listy opcji w polu wyboru
-    // function updateSelect(selectElement, options) {
-    //     // Wyczyść aktualne opcje
-    //     selectElement.innerHTML = '';
-    //
-    //     // Dodaj nowe opcje
-    //     options.forEach(option => {
-    //         const optionElement = document.createElement('option');
-    //         optionElement.value = option.id;
-    //         optionElement.textContent = option.name;
-    //         selectElement.appendChild(optionElement);
-    //     });
-    // }
+
 
     // Obsługa zdarzenia wysłania formularza
     reservationForm.addEventListener('submit', event => {

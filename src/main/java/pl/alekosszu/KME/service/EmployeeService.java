@@ -57,7 +57,9 @@ public class EmployeeService {
         LocalTime empStartTime;
         LocalTime appointmentStartTime = appointment.getStartTime();
         LocalTime empEndTime;
-        LocalTime appointmentEndTime = appointmentStartTime.plusMinutes(procedureToCountDuration.getDuration().toMinutes());
+        Duration durationOfProcedureInMinutes =Duration.ofMinutes(procedureToCountDuration.getDuration());
+        int durationAsInt = procedureToCountDuration.getDuration();
+        LocalTime appointmentEndTime = appointmentStartTime.plusMinutes(durationAsInt);
         Duration duration = Duration.between(appointmentStartTime, appointmentEndTime);
         long durationAsLong = duration.toMinutes();
 

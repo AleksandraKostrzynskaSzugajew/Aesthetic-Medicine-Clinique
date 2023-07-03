@@ -23,7 +23,8 @@ insert into treatment (name, duration, cost) values ("oczyszczanie", 120, 300.0)
 # insert into employees( city, first_name, house_number, last_name, phone_number1, phone_number2, postcode, street
 # ) values ("Gansk", "Alina", "202", "Malec", "123456", "1234567", "55-432", "Rozowa");
 
-insert into employees(city, first_name, last_name) VALUE ("warsaw", "Adam", "kot");
+insert into employees(city, first_name, last_name, name) VALUE ("warsaw", "Adam", "kot","adam");
+insert into employees(city, first_name, last_name, name) VALUE ("warsaw", "Ola", "lalal","Ola");
 
 # insert into schedule (date, end_time, start_time, employee_id
 # ) values ("2023-07-21", "17:00", "10:00", 1);

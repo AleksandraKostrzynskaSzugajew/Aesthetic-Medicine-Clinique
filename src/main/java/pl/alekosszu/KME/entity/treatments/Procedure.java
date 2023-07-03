@@ -20,7 +20,7 @@ public class Procedure {
     private Long id;
 
     private String name;
-    private Duration duration; // in minutes
+    private int duration; // in minutes
     private double cost;
 
     @ManyToOne
