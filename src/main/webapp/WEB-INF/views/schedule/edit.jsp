@@ -80,16 +80,16 @@
 
 <form:form method="post" action="saved/${empId}" modelAttribute="schedule">
 
-<div>Date: (yyyy-mm-dd) <input type="text" id="datepicker" name="date"></div>
-<div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" value="1" name="startTime"></div>
-<div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime"><br>
-    <div style="display: none">Date to be displayed: <input type="text" id="nameField" name="name">
-    </div>
-        <%--    <form:hidden path="employee.id"/>--%>
+    <div>Date: (yyyy-mm-dd) <input type="text" id="datepicker" name="date" value="${schedule.date}" /></div>
+    <div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" name="startTime" value="${schedule.startTime}" /></div>
+    <div>End time: (hh:mm:ss) <input type="text" id="timepicker2" name="endTime" value="${schedule.endTime}" /></div>
+    <div style="display: none">Date to be displayed: <input type="text" id="nameField" name="name" value="${schedule.name}" /></div>
+
+    <input type="hidden" name="id" value="${schedule.id}" />
     <input type="submit" value="Update schedule item">
 
-        <form:hidden path="id"/>
-    </form:form>
+</form:form>
+
 
 </body>
 </html>

@@ -52,6 +52,8 @@
             <td><c:forEach var="schedule" items="${employee.schedule}">
                 <p>${schedule.getScheduledAppointments()}</p>
                 <a href="<c:url value='/emp/schedule/remove?id=${schedule.id}'/>">Remove</a>
+                <a href="<c:url value='/emp/schedule/edit?id=${schedule.id}'/>">Edit</a>
+
             </c:forEach></td>
 
         </tr>

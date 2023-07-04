@@ -12,6 +12,8 @@ spring:
         format_sql: true
     database: mysql
   mvc:
+    format:
+      time: HH:mm:ss
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
@@ -35,3 +37,4 @@ spring:
         strategy:
           content:
             enabled: true
+

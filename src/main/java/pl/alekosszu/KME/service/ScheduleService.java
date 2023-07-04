@@ -1,7 +1,10 @@
 package pl.alekosszu.KME.service;
 
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,13 +63,7 @@ public class ScheduleService {
         return scheduleRepository.findOccupiedTimes(employeeId, date);
     }
 
-    public void deleteEmployeeSchedulesByScheduleId(@Param("scheduleId") Long scheduleId) {
-        scheduleRepository.deleteEmployeeSchedulesByScheduleId(scheduleId);
-    }
 
-    public void deleteScheduleById(@Param("scheduleId") Long scheduleId) {
-        scheduleRepository.deleteScheduleById(scheduleId);
-    }
 
 
 

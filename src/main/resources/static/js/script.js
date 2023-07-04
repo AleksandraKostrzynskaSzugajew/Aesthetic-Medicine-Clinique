@@ -1,13 +1,13 @@
 window.addEventListener('DOMContentLoaded', () => {
     // Pobierz elementy formularza
     const reservationForm = document.getElementById('reservationForm');
-    const procedureSelect = document.getElementById('procedure');
-    const doctorSelect = document.getElementById('doctor');
-    const daySelect = document.getElementById('day');
+    const procedureSelect = document.getElementById('procedureId');
+    const doctorSelect = document.getElementById('employeeId');
+    const daySelect = document.getElementById('scheduleId');
     const hourSelect = document.getElementById('hour');
 
 // Funkcja do aktualizacji listy opcji w polu wyboru
-    function updateSelect(selectElement, options) {
+    function updateSelect(selectElement, options, selectedValue) {
         // Wyczyść aktualne opcje
         selectElement.innerHTML = '';
 
@@ -16,16 +16,23 @@ window.addEventListener('DOMContentLoaded', () => {
             const optionElement = document.createElement('option');
             optionElement.value = option.id;
             optionElement.textContent = option.name;
+
+            // Sprawdź, czy aktualna opcja ma wartość równą selectedValue
+            if (option.id === selectedValue) {
+                optionElement.selected = true; // Ustaw atrybut selected
+            }
+
             selectElement.appendChild(optionElement);
         });
     }
 
+
     function updateSelectHours(selectElement, hours) {
         selectElement.innerHTML = '';
 
-        hours.forEach((hour, index) => {
+        hours.forEach((hour) => {
             const optionElement = document.createElement('option');
-            optionElement.value = index; // Ustawiamy wartość opcji jako indeks w tablicy
+            optionElement.value = hour; // Ustawiamy wartość opcji jako indeks w tablicy
             optionElement.textContent = hour; // Wykorzystujemy godzinę jako tekst opcji
             selectElement.appendChild(optionElement);
         });
@@ -61,14 +68,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Obsłuż zmianę wybranej daty i pobierz listę dostępnych godzin
     daySelect.addEventListener('change', () => {
-        const selectedProcedureId = procedureSelect.value;
-        const selectedEmployeeId = doctorSelect.value;
-        const scheduleId = daySelect.value;
-        fetch(`/user/createappointment/gah?procedureId=${selectedProcedureId}&employeeId=${selectedEmployeeId}&scheduleId=${scheduleId}`)
+        const procedureIdx = procedureSelect.value;
+        const employeeIdx = doctorSelect.value;
+        const scheduleIdx = daySelect.value;
+
+        console.log(procedureIdx);
+        fetch(`/user/createappointment/gah?procedureId=${procedureIdx}&employeeId=${employeeIdx}&scheduleId=${scheduleIdx}`)
             .then(response => response.json())
             .then(hours => {
                 console.log(hours)
-                updateSelectHours(hourSelect, hours);
+                updateSelectHours(hourSelect, hours, hourSelect.value);
             });
     });
 

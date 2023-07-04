@@ -1,6 +1,9 @@
 package pl.alekosszu.KME.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,10 +11,8 @@ import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
-import pl.alekosszu.KME.service.AppointmentService;
-import pl.alekosszu.KME.service.EmployeeService;
-import pl.alekosszu.KME.service.ProcedureService;
-import pl.alekosszu.KME.service.ScheduleService;
+import pl.alekosszu.KME.entity.user.User;
+import pl.alekosszu.KME.service.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -30,31 +31,50 @@ public class AppointmentController {
     private final EmployeeService employeeService;
     private final ProcedureService procedureService;
     private final ScheduleService scheduleService;
+    private final UserService userService;
+
+    //  private final MailService mailService;
 
     @GetMapping("/appointments")
     public String showAppointmentForm(Model model) {
-        // 1. Pobierze listę dostępnych zabiegów
-        List<Appointment> availableProcedures = appointmentService.findAll();
-        model.addAttribute("availableProcedures", availableProcedures);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // gets my email
+        User user = userService.findByEmail(userEmail);
+        System.out.println("================================================");
+        System.out.println(user.getId());
+        System.out.println("================================================");
+
+        model.addAttribute("userId", user.getId());
         return "user/makeAnAppointment";
     }
 
 
     @PostMapping("/apposave")
-    @ResponseBody
-    public String createAppointment(@RequestParam(name="procedure") Long procedureId,
-                                    @RequestParam(name="doctor") Long employeeId,
-                                    @RequestParam(name="day") LocalDate date,
-                                    @RequestParam(name="hour") LocalTime startTime) {
+    //  @ResponseBody
+    public String createAppointment(@RequestParam(name = "procedureId") Long procedureId,
+                                    @RequestParam(name = "employeeId") Long employeeId,
+                                    @RequestParam(name = "scheduleId") Long scheduleId,
+                                    @RequestParam(name = "hour")
+                                    @DateTimeFormat(pattern = "HH:mm") LocalTime hour)
+    {
 
         Appointment appointment = new Appointment();
         appointment.setProcedureId(procedureId);
         appointment.setEmployeeId(employeeId);
-        appointment.setDate(date);
-        appointment.setStartTime(startTime);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        appointment.setDate(schedule.getDate());
+        appointment.setStartTime(hour);
+        Procedure procedure = procedureService.findById(procedureId);
+        appointment.setEndTime(hour.plusMinutes(procedure.getDuration()));
+
+        appointmentService.save(appointment);
 
         employeeService.addAppointmentToSchedule(appointment);
-        appointmentService.save(appointment);
+
+
+        //email part
+
+        //  mailService.sendMail();
 
         return "redirect:appointments";
 

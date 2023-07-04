@@ -80,8 +80,8 @@ public class ScheduleController {
     @GetMapping("/remove")
     public String remove(@RequestParam Long id) {
 
-        scheduleService.deleteEmployeeSchedulesByScheduleId(id);
-        scheduleService.deleteScheduleById(id);
+//        scheduleService.deleteEmployeeSchedulesByScheduleId(id);
+//        scheduleService.deleteScheduleById(id);
 
         return "redirect:findall";
     }
@@ -97,7 +97,7 @@ public class ScheduleController {
     @PostMapping("/edited")
     public String finalizeEdit(Schedule schedule, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "schedule/edit";
+            return "redirect:findall";
         }
 
         scheduleService.update(schedule);

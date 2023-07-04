@@ -14,7 +14,7 @@ For which procedure would you like to make an appointment?
 
 <form id="reservationForm" action="/user/createappointment/apposave" method="post">
 <%--    <label for="procedure">Treatment:</label>--%>
-    <select id="procedure" name="procedure">
+    <select id="procedureId" name="procedureId">
         <option value="">Choose treatment</option>
     </select>
     <br>
@@ -22,14 +22,14 @@ For which procedure would you like to make an appointment?
     Choose employee to perform procedure
     <br>
 <%--    <label for="doctor">Employee:</label>--%>
-    <select id="doctor" name="doctor">
+    <select id="employeeId" name="employeeId">
         <option value="">Choose employee</option>
     </select>
     <br>
 <br>
     Choose the most suitable day for your visit
 <%--    <label for="day">Dzień:</label>--%>
-    <select id="day" name="day">
+    <select id="scheduleId" name="scheduleId">
         <option value="">Choose day</option>
     </select>
     <br>
@@ -41,6 +41,8 @@ For which procedure would you like to make an appointment?
     </select>
 
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+    <input type="hidden" name="userId" value="${userId}"/>
 
     <button type="submit">Create my appointment!</button>
 </form>

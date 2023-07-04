@@ -2,6 +2,7 @@ package pl.alekosszu.KME.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.alekosszu.KME.entity.employee.Schedule;
@@ -26,8 +27,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
 
 
-    @Query("DELETE FROM EmployeeSchedule es WHERE es.schedule.id = :scheduleId")
-    void deleteEmployeeSchedulesByScheduleId(@Param("scheduleId") Long scheduleId);
 
 
     @Query("DELETE FROM Schedule s WHERE s.id = :scheduleId")
