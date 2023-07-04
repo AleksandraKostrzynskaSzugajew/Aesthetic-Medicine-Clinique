@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Category;
+import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.repository.ScheduleRepository;
 import pl.alekosszu.KME.service.CategoryService;
 import pl.alekosszu.KME.service.EmployeeService;
@@ -79,9 +80,7 @@ public class ScheduleController {
 
     @GetMapping("/remove")
     public String remove(@RequestParam Long id) {
-
-//        scheduleService.deleteEmployeeSchedulesByScheduleId(id);
-//        scheduleService.deleteScheduleById(id);
+        scheduleService.deleteById(id);
 
         return "redirect:findall";
     }
@@ -102,6 +101,24 @@ public class ScheduleController {
 
         scheduleService.update(schedule);
         return "redirect:findall";
+    }
+
+    @GetMapping("/rmv")
+    public String removeAppointmentById(@RequestParam Long employeeId,
+                                        @RequestParam Long scheduleId){
+
+        Employee employee = employeeService.findById(employeeId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+
+
+        for (Schedule s: employee.getSchedule()) {
+            if (s.getId()==scheduleId){
+                employee.removeScheduleItem(schedule);
+                scheduleService.deleteById(scheduleId);
+            }
+
+        }
+        return "adminHome";
     }
 
 

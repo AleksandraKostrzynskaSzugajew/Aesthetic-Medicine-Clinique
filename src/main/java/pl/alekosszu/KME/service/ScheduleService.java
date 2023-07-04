@@ -12,6 +12,8 @@ import pl.alekosszu.KME.entity.employee.Employee;
 import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.employee.Specialty;
 import pl.alekosszu.KME.entity.treatments.Procedure;
+import pl.alekosszu.KME.entity.user.Appointment;
+import pl.alekosszu.KME.repository.AppointmentRepository;
 import pl.alekosszu.KME.repository.ScheduleRepository;
 
 import java.time.Duration;
@@ -44,8 +46,7 @@ public class ScheduleService {
     }
 
     public void deleteById(Long id) {
-
-
+        removeAllAppointmentsFromScheduleItem(id);
         scheduleRepository.deleteById(id);
     }
 
@@ -58,14 +59,22 @@ public class ScheduleService {
     }
 
 
-    public List<LocalTime> findOccupiedTimes(@Param("employeeId") Long employeeId,
-                                             @Param("date") LocalDate date) {
-        return scheduleRepository.findOccupiedTimes(employeeId, date);
+//    public List<LocalTime> findOccupiedTimes(@Param("employeeId") Long employeeId,
+//                                             @Param("scheduleId") Long scheduleId){
+//        return scheduleRepository.findOccupiedTimes(employeeId, scheduleId);
+//    }
+
+
+    public void removeAllAppointmentsFromScheduleItem(Long scheduleId) {
+        Schedule schedule = findById(scheduleId);
+        List<Appointment> appointmentsToCancel = schedule.getScheduledAppointments();
+        for (Appointment appointment : appointmentsToCancel) {
+            deleteById(appointment.getId());
+        }
     }
 
-
-
-
-
+    public List<Appointment> findAppointmentsByScheduleId(@Param("scheduleId") Long scheduleId){
+       return scheduleRepository.findAppointmentsByScheduleId(scheduleId);
+    };
 
 }

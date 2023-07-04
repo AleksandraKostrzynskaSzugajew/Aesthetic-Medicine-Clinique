@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.alekosszu.KME.entity.employee.Schedule;
+import pl.alekosszu.KME.entity.user.Appointment;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,17 +20,13 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Query("SELECT s FROM Schedule s WHERE s.employeeId = :employeeId")
     List<Schedule> findSchedulesByEmployeeId(@Param("employeeId") Long employeeId);
 
-
-    @Query("SELECT s.startTime FROM Schedule s WHERE s.employeeId = :employeeId " +
-            "AND s.date = :date")
-    List<LocalTime> findOccupiedTimes(@Param("employeeId") Long employeeId,
-                                      @Param("date") LocalDate date);
-
-
-
+    @Query("SELECT a FROM Appointment a WHERE a.scheduleId = :scheduleId")
+    List<Appointment> findAppointmentsByScheduleId(@Param("scheduleId") Long scheduleId);
 
 
     @Query("DELETE FROM Schedule s WHERE s.id = :scheduleId")
     void deleteScheduleById(@Param("scheduleId") Long scheduleId);
+
+
 }
 

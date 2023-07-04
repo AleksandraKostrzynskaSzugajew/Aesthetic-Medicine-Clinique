@@ -24,7 +24,7 @@ public class Appointment {
     private Long id;
 
     private Long procedureId;
-
+    private Long scheduleId;
     private Long employeeId;
 
     private LocalDate date;
@@ -32,6 +32,7 @@ public class Appointment {
     private LocalTime startTime;
     private LocalTime endTime;
 
+    private Long userId;
 
 
 }

@@ -24,9 +24,6 @@ import java.util.List;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final ScheduleRepository scheduleRepository;
-
-    private final EmployeeService employeeService;
     private final ScheduleService scheduleService;
     private final ProcedureService procedureService;
 
@@ -73,7 +70,7 @@ public class AppointmentService {
         }
 
         // Pobierz zajęte godziny z grafiku na żądany dzień
-        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, schedule.getDate());
+        List<LocalTime> occupiedTimes = scheduleService.f(employeeId, scheduleId);
 
         // Sprawdź, czy istnieje pokrywanie się zajętych godzin
         for (LocalTime occupiedTime : occupiedTimes) {
@@ -88,6 +85,7 @@ public class AppointmentService {
 
         return true; // Nie ma pokrywających się wizyt
     }
+
 
 
 

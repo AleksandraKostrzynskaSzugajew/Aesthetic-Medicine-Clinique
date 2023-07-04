@@ -49,19 +49,24 @@
             </c:forEach></td>
 
 
-            <td><c:forEach var="schedule" items="${employee.schedule}">
-                <p>${schedule.getScheduledAppointments()}</p>
-                <a href="<c:url value='/emp/schedule/remove?id=${schedule.id}'/>">Remove</a>
-                <a href="<c:url value='/emp/schedule/edit?id=${schedule.id}'/>">Edit</a>
-
-            </c:forEach></td>
+            <td>
+                <c:forEach var="schedule" items="${employee.schedule}">
+                    <p>${schedule.getScheduledAppointments()}</p>
+                    <c:forEach var="appointment" items="${schedule.scheduledAppointments}">
+                        <p>${appointment.id}</p>
+                        <a href="<c:url value='/user/createappointment/rmv?employeeId=${employee.id}&scheduleId=${schedule.id}&appointmentId=${appointment.id}'/>">Remove Appointment</a>
+                    </c:forEach>
+                    <a href="<c:url value='/emp/schedule/rmv?employeeId=${employee.id}&scheduleId=${schedule.id}'/>">Remove Schedule</a>
+                    <a href="<c:url value='/emp/schedule/edit?employeeId=${employee.id}&scheduleId=${schedule.id}'/>">Edit Schedule</a>
+                </c:forEach>
+            </td>
 
         </tr>
         </td>
 
 
         <td><a href="<c:url value='/admin/emp/edit?id=${employee.id}'/>">Edit</a></td>
-        <td><a href="<c:url value='/admin/emp/remove?id=${employee.id}'/>"
+        <td><a href="<c:url value='/emp/schedule/remove?id=${employee.id}'/>"
                onclick="return confirm('Are you sure?')">Remove</a></td>
         <td><a href="<c:url value='/emp/schedule/save?id=${employee.id}'/>">Add position to schedule</a></td>
 

@@ -63,4 +63,8 @@ public class Employee {
         schedule.add(scheduleItem);
     }
 
+    public void removeScheduleItem(Schedule scheduleItem) {
+        schedule.remove(scheduleItem);
+    }
 }
+

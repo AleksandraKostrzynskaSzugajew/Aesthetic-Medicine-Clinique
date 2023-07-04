@@ -55,7 +55,8 @@ public class AppointmentController {
                                     @RequestParam(name = "employeeId") Long employeeId,
                                     @RequestParam(name = "scheduleId") Long scheduleId,
                                     @RequestParam(name = "hour")
-                                    @DateTimeFormat(pattern = "HH:mm") LocalTime hour)
+                                    @DateTimeFormat(pattern = "HH:mm") LocalTime hour,
+                                    @RequestParam(name = "userId") Long userId)
     {
 
         Appointment appointment = new Appointment();
@@ -66,6 +67,8 @@ public class AppointmentController {
         appointment.setStartTime(hour);
         Procedure procedure = procedureService.findById(procedureId);
         appointment.setEndTime(hour.plusMinutes(procedure.getDuration()));
+        appointment.setUserId(userId);
+        appointment.setScheduleId(scheduleId);
 
         appointmentService.save(appointment);
 
@@ -132,7 +135,25 @@ public class AppointmentController {
 
         // Pobierz zajęte godziny dla danego dnia
         LocalDate date = schedule.getDate();
-        List<LocalTime> occupiedTimes = scheduleService.findOccupiedTimes(employeeId, date);
+        List<Appointment> occupiedTimes = scheduleService.findAppointmentsByScheduleId(scheduleId);
+
+
+
+        //tu zaczac jutro!!! Napisac metode ktora pobierze kazdy appointment i godziny kiedy sie zaczyna i konczy i te zarezerwuje w miedzyczasie
+
+        //nastepnie liste ktora bedzie miala wszystkie polgodzinne okresy dla danego dnia pracy
+
+        //wolne godziny to beda te ktore sa na liscie wszystkich po porownaniu i wyjeciu tych zajetych
+
+
+
+
+
+
+
+        System.out.println("================================================================");
+        System.out.println("occupied times = " + occupiedTimes);
+        System.out.println("===================================================================");
 
         // Określ minimalną i maksymalną godzinę pracy lekarza
         LocalTime minTime = schedule.getStartTime();
@@ -159,6 +180,25 @@ public class AppointmentController {
 
         return availableHours;
 
+    }
+
+    @GetMapping("/rmv")
+    public String removeAppointmentById(@RequestParam Long employeeId,
+            @RequestParam Long scheduleId,
+            @RequestParam Long appointmentId){
+
+        Employee employee = employeeService.findById(employeeId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        Appointment appointment = appointmentService.findById(appointmentId);
+
+        for (Schedule s: employee.getSchedule()) {
+            if (s.getScheduledAppointments().contains(appointment)){
+                s.removeFromScheduledAppointments(appointment);
+                appointmentService.deleteById(appointmentId);
+            }
+
+        }
+        return "adminHome";
     }
 
 

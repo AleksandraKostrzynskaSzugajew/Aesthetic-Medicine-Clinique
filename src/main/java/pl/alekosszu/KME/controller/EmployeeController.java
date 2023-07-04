@@ -30,8 +30,6 @@ public class EmployeeController {
     private final ScheduleService scheduleService;
 
 
-
-
     @ModelAttribute("specialties")
     public List<Specialty> specialties() {
         return specialtyService.findAll();
@@ -46,8 +44,6 @@ public class EmployeeController {
     public List<Schedule> schedules() {
         return scheduleService.findAll();
     }
-
-
 
 
     @GetMapping("/save")
@@ -67,6 +63,7 @@ public class EmployeeController {
     public String findAll(Model model) {
         final List<Employee> employees = employeeService.findAll();
         model.addAttribute("employees", employees);
+
         return "employee/list";
     }
 
@@ -94,5 +91,17 @@ public class EmployeeController {
         return "redirect:findall";
     }
 
+    @GetMapping("/removeScheduleItem")
+    public String removeScheduleItem(@RequestParam Long employeeId,
+                                     @RequestParam Long scheduleId) {
+        scheduleService.removeAllAppointmentsFromScheduleItem(scheduleId);
+        Employee employee = employeeService.findById(employeeId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        employee.removeScheduleItem(schedule);
+        System.out.println("===================================");
+        System.out.println("removed");
+        System.out.println("===================================");
+        return "employee/list";
+    }
 
 }

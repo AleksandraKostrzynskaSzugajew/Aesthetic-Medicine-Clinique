@@ -53,4 +53,8 @@ public class Schedule {
 
     }
 
+    public void removeFromScheduledAppointments(Appointment appointment){
+        scheduledAppointments.remove(appointment);
+    }
+
 }
