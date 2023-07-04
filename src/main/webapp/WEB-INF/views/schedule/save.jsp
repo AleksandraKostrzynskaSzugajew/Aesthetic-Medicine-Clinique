@@ -17,6 +17,27 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var datepickerField = document.getElementById("datepicker");
+            var nameField = document.getElementById("name");
+
+            datepickerField.addEventListener("input", updateNameField);
+
+            // Funkcja aktualizująca pole name
+            function updateNameField() {
+                var date = datepickerField.value;
+                nameField.value = date;
+            }
+        });
+
+        $(function () {
+            $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+        });
+
+    </script>
+
+
 </head>
 <body>
 
@@ -59,44 +80,14 @@
 
 <form:form method="post" action="saved/${empId}" modelAttribute="schedule">
 
-    <div>Date: (yyyy-mm-dd) <input type="text" id="datepicker" name="date"></div>
-    <div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" value="1" name="startTime"></div>
-    <div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime"><br>
-    <div>Date to be displayed: <input type="text" id="name" name="name">
+<div>Date: (yyyy-mm-dd) <input type="text" id="datepicker" name="date"></div>
+<div>Start time: (hh:mm:ss) <input type="text" id="timepicker1" value="1" name="startTime"></div>
+<div>End time: (hh:mm:ss) <input type="text" id="timepicker2" value="2" name="endTime"><br>
+    <div style="display: none">Date to be displayed: <input type="text" id="nameField" name="name">
     </div>
-<%--    <form:hidden path="employee.id"/>--%>
+        <%--    <form:hidden path="employee.id"/>--%>
     <input type="submit" value="Add new schedule item">
-</form:form>
+    </form:form>
 
 </body>
 </html>
-
-
-<%--another optionals for script--%>
-<%--<script>--%>
-<%--    $(function() {--%>
-<%--        $("#datepicker").datepicker({--%>
-<%--            dateFormat: "yy-mm-dd",--%>
-<%--            minDate: 0, // Restrict dates in the past--%>
-<%--            maxDate: "+1w", // Restrict dates within the next week--%>
-<%--            showButtonPanel: true, // Show a button panel for navigation--%>
-<%--            changeMonth: true, // Allow month selection--%>
-<%--            changeYear: true, // Allow year selection--%>
-<%--            yearRange: "2000:2030" // Specify the range of selectable years--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
-
-
-<%--<script>--%>
-<%--    $(function() {--%>
-<%--        $("#timepicker").timepicker({--%>
-<%--            timeFormat: 'hh:mm tt',--%>
-<%--            interval: 15, // Set time interval to 15 minutes--%>
-<%--            minTime: '09:00', // Set minimum selectable time--%>
-<%--            maxTime: '18:00', // Set maximum selectable time--%>
-<%--            dynamic: false, // Enable dynamic time scrolling--%>
-<%--            dropdown: true // Show time dropdown instead of spinner--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>

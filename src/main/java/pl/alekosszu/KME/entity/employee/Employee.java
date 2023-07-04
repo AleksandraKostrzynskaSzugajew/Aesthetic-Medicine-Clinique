@@ -47,7 +47,7 @@ public class Employee {
     private String name;
 
     @NotNull
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Specialty> specialties;
 
 
@@ -55,7 +55,7 @@ public class Employee {
     @JoinTable(name = "employee_procedure")
     private Collection<Procedure> performedProcedures;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Collection<Schedule> schedule;
 
 

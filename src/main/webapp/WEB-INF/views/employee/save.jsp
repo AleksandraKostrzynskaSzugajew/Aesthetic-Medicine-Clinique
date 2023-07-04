@@ -5,6 +5,29 @@
 <head>
     <title>Save new employee</title>
     <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var firstNameField = document.getElementById("firstName");
+            var lastNameField = document.getElementById("lastName");
+            var nameField = document.getElementById("nameField");
+
+            // Nasłuchuj zmian w polach firstName i lastName
+            firstNameField.addEventListener("input", updateNameField);
+            lastNameField.addEventListener("input", updateNameField);
+
+            // Funkcja aktualizująca pole name
+            function updateNameField() {
+                var firstName = firstNameField.value;
+                var lastName = lastNameField.value;
+                var fullName = firstName + " " + lastName;
+
+                nameField.value = fullName;
+            }
+        });
+    </script>
+
 </head>
 <body>
 
@@ -12,8 +35,8 @@
 
 <form:form method="post" action="saved" modelAttribute="employee">
 
-    <div>First name: <form:input path="firstName"/></div>
-    <div>Last name: <form:input path="lastName"/></div>
+    <div>First name: <form:input path="firstName" id="firstName"/></div>
+    <div>Last name: <form:input path="lastName" id="lastName"/></div>
     <div>Street: <form:input path="street"/></div>
     <div>House number: <form:input path="houseNumber"/></div>
     <div>Post code: <form:input path="postcode"/></div>
@@ -31,7 +54,8 @@
         <form:options items="${procedures}" itemValue="id" itemLabel="name"></form:options>
     </form:select></div>
     <br>
-    <div>Name to be displayed: <form:input path="name"/></div>
+
+    <div style="display: none;">Name to be displayed: <form:input path="name" id="nameField"/></div>
     <br>
 
 

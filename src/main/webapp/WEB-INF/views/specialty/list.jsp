@@ -10,27 +10,21 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Duration</th>
-        <th>Cost</th>
-        <th>Category</th>
-        <th>Employees entitled to perform</th>
     </tr>
-    <c:forEach items="${procedures}" var="procedure">
+    <c:forEach items="${specialties}" var="specialty">
         <tr>
-            <td>${procedure.id}</td>
-            <td>${procedure.name}</td>
-            <td>${procedure.duration}</td>
-            <td>${procedure.cost}</td>
-            <td>${procedure.category}</td>
-            <td>${procedure.employeesPerformingProcedure}</td>
+            <td>${specialty.id}</td>
+            <td>${specialty.name}</td>
 
-            <td><a href="<c:url value='/admin/procedure/edit?id=${procedure.id}'/>">Edit</a></td>
-            <td><a href="<c:url value='/admin/procedure/remove?id=${procedure.id}'/>" onclick="return confirm('Are you sure?')">Remove</a></td>
-            <td><a href="<c:url value='/admin/procedure/save' />">Add new procedure</a></td>
+            <td><a href="<c:url value='/admin/specialty/edit?id=${specialty.id}'/>">Edit</a></td>
+            <td><a href="<c:url value='/admin/specialty/remove?id=${specialty.id}'/>" onclick="return confirm('Are you sure?')">Remove</a></td>
         </tr>
     </c:forEach>
 </table>
 
+<br>
+<br>
+<td><a href="<c:url value='/admin/specialty/save' />">Add new specialty</a></td>
 <br>
 <br>
 <td><a href="<c:url value='/admin/home' />">Go back home</a></td>

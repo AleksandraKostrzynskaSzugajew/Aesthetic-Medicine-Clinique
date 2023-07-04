@@ -41,6 +41,8 @@ public class ScheduleService {
     }
 
     public void deleteById(Long id) {
+
+
         scheduleRepository.deleteById(id);
     }
 
@@ -58,7 +60,15 @@ public class ScheduleService {
         return scheduleRepository.findOccupiedTimes(employeeId, date);
     }
 
-    ;
+    public void deleteEmployeeSchedulesByScheduleId(@Param("scheduleId") Long scheduleId) {
+        scheduleRepository.deleteEmployeeSchedulesByScheduleId(scheduleId);
+    }
+
+    public void deleteScheduleById(@Param("scheduleId") Long scheduleId) {
+        scheduleRepository.deleteScheduleById(scheduleId);
+    }
+
+
 
 
 }

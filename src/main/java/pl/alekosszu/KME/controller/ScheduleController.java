@@ -48,13 +48,26 @@ public class ScheduleController {
         scheduleService.save(schedule);
 
 
-        employee.addToSchedule(schedule);
+        boolean isDateAlreadyExists = false;
+
+        for (Schedule existingScheduleItem : employee.getSchedule()) {
+            if (existingScheduleItem.getDate().equals(schedule.getDate())) {
+                isDateAlreadyExists = true;
+                break;
+            }
+        }
+
+        if (!isDateAlreadyExists) {
+            employee.addToSchedule(schedule);
+            System.out.println("Item for employee with id: " + empId + " saved");
+            List<Employee> employees = employeeService.findAll();
+            model.addAttribute("employees", employees);
+
+            return "employee/list";
+        }
+        return "errorPage";
 
 
-        System.out.println("Item for employee with id: " + empId + " saved");
-        List<Employee> employees = employeeService.findAll();
-        model.addAttribute("employees", employees);
-        return "employee/list";
     }
 
     @GetMapping("/findall")
@@ -66,7 +79,10 @@ public class ScheduleController {
 
     @GetMapping("/remove")
     public String remove(@RequestParam Long id) {
-        scheduleService.deleteById(id);
+
+        scheduleService.deleteEmployeeSchedulesByScheduleId(id);
+        scheduleService.deleteScheduleById(id);
+
         return "redirect:findall";
     }
 
