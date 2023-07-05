@@ -74,15 +74,61 @@ public class AppointmentController {
 
         employeeService.addAppointmentToSchedule(appointment);
 
-
-        //email part
-
-        //  mailService.sendMail();
+        sendConfirmationEmail(appointment);
 
         return "redirect:appointments";
 
 
     }
+
+    private void sendConfirmationEmail(Appointment appointment) {
+        // Dane konfiguracyjne serwera SMTP
+        String host = "smtp.example.com";
+        int port = 587;
+        String username = "your_username";
+        String password = "your_password";
+
+        // Tworzenie właściwości dla sesji e-mail
+        Properties props = new Properties();
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", port);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        // Tworzenie autentykacji
+        Authenticator auth = new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        };
+
+        // Tworzenie sesji e-mail
+        Session session = Session.getInstance(props, auth);
+
+        try {
+            // Tworzenie wiadomości e-mail
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(appointment.getUserEmail()));
+            message.setSubject("Potwierdzenie wizyty");
+            message.setText("Potwierdzenie rezerwacji wizyty:\n\n" +
+                    "Data: " + appointment.getDate() + "\n" +
+                    "Godzina: " + appointment.getStartTime() + "\n" +
+                    "Procedura: " + appointment.getProcedureName() + "\n" +
+                    "Pracownik: " + appointment.getEmployeeName());
+
+            // Wysłanie wiadomości e-mail
+            Transport.send(message);
+
+            System.out.println("Wiadomość e-mail została wysłana z potwierdzeniem wizyty.");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            System.out.println("Wystąpił błąd podczas wysyłania wiadomości e-mail.");
+        }
+    }
+
+
+
 
     //endpoint dla pobierania listy zabiegow
     @GetMapping("/getprocedures")

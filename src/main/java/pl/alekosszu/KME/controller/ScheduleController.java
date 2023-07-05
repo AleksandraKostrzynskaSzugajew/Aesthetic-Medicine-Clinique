@@ -39,15 +39,12 @@ public class ScheduleController {
         schedule.setEmployeeId(empId);
         Employee employee = employeeService.findById(empId);
 
-
         String startString = String.valueOf(schedule.getStartTime());
         String endString = String.valueOf(schedule.getEndTime());
         LocalTime start = LocalTime.parse(startString);
         LocalTime end = LocalTime.parse(endString);
         schedule.setStartTime(start);
         schedule.setEndTime(end);
-        scheduleService.save(schedule);
-
 
         boolean isDateAlreadyExists = false;
 
@@ -59,17 +56,17 @@ public class ScheduleController {
         }
 
         if (!isDateAlreadyExists) {
+            scheduleService.save(schedule);
             employee.addToSchedule(schedule);
             System.out.println("Item for employee with id: " + empId + " saved");
             List<Employee> employees = employeeService.findAll();
             model.addAttribute("employees", employees);
-
             return "employee/list";
         }
+
         return "errorPage";
-
-
     }
+
 
     @GetMapping("/findall")
     public String findAll(Model model) {
