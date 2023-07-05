@@ -1,12 +1,7 @@
 package pl.alekosszu.KME.controller;
 
-import jakarta.mail.PasswordAuthentication;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,9 +12,8 @@ import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.entity.user.User;
-import pl.alekosszu.KME.mailSender.EmailService;
+import pl.alekosszu.KME.mailSender.EmailServiceImpl;
 import pl.alekosszu.KME.service.*;
-
 
 
 import java.time.Duration;
@@ -28,7 +22,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
 
 @Controller
 @RequestMapping("/user/createappointment")
@@ -42,8 +35,7 @@ public class AppointmentController {
     private final ScheduleService scheduleService;
     private final UserService userService;
 
-    private final EmailService emailService;
-
+    private final EmailServiceImpl emailServiceImpl;
 
 
     @GetMapping("/appointments")
@@ -102,7 +94,8 @@ public class AppointmentController {
                 + "<br><br>"
                 + "Do zobaczenia, zespół SzugajewEsthetic.";
 
-        emailService.sendSimpleMessage(user.getEmail(), "Potwierdzenie wizyty w SzugajewEsthetic", messageText);
+
+        emailServiceImpl.sendMail(user.getEmail(), "Potwierdzenie wizyty w SzugajewEsthetic", messageText);
 
         return "redirect:appointments";
 

@@ -1,25 +1,11 @@
 package pl.alekosszu.KME.mailSender;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-@Component
-public class EmailService {
+public interface EmailService {
+    String sendMail(String to, String subject, String body);
 
-    private final JavaMailSenderImpl emailSender;
 
-    @Autowired
-    public EmailService(JavaMailSenderImpl emailSender) {
-        this.emailSender = emailSender;
-    }
-
-    public void sendSimpleMessage(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        emailSender.send(message);
-    }
+    //more elaborated version
+    // String sendMail(MultipartFile[] file, String to, String[] cc, String subject, String body);
 }
