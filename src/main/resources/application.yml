@@ -37,4 +37,15 @@ spring:
         strategy:
           content:
             enabled: true
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: szugajew.esthetic@gmail.com
+    password: Misiaczek123!
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true

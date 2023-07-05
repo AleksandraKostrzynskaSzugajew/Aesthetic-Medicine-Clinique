@@ -1,8 +1,12 @@
 package pl.alekosszu.KME.controller;
 
+import jakarta.mail.PasswordAuthentication;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,12 +19,21 @@ import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.entity.user.User;
 import pl.alekosszu.KME.service.*;
 
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.net.Authenticator;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 @Controller
 @RequestMapping("/user/createappointment")
@@ -34,7 +47,9 @@ public class AppointmentController {
     private final ScheduleService scheduleService;
     private final UserService userService;
 
-    //  private final MailService mailService;
+    private final JavaMailSender mailSender;
+
+
 
     @GetMapping("/appointments")
     public String showAppointmentForm(Model model) {
@@ -57,8 +72,10 @@ public class AppointmentController {
                                     @RequestParam(name = "scheduleId") Long scheduleId,
                                     @RequestParam(name = "hour")
                                     @DateTimeFormat(pattern = "HH:mm") LocalTime hour,
-                                    @RequestParam(name = "userId") Long userId) {
+                                    @RequestParam(name = "userId") Long userId) throws jakarta.mail.MessagingException {
 
+        Employee employee = employeeService.findById(employeeId);
+        User user = userService.findById(userId);
         Appointment appointment = new Appointment();
         appointment.setProcedureId(procedureId);
         appointment.setEmployeeId(employeeId);
@@ -74,60 +91,46 @@ public class AppointmentController {
 
         employeeService.addAppointmentToSchedule(appointment);
 
-        sendConfirmationEmail(appointment);
+        // Wysyłanie wiadomości e-mail
+        jakarta.mail.internet.MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        // Konfiguracja treści wiadomości
+        helper.setTo(user.getEmail());
+        helper.setSubject("Potwierdzenie wizyty w SzugajewEsthetic");
+
+        //String cancellationLink = "https://example.com/cancel?email=" + user.getEmail();
+
+
+        String messageText = "Witaj " + user.getFirstName() + "! "
+                + "<br><br>"
+                + "Twoja wizyta w SzugajewEsthetic Klinika Medycyny Estetycznej została zarezerwowana. Oto szczegóły wizyty:"
+                + "<br>"
+                + "<ul>"
+                + "<li>Data: " + appointment.getDate() + "</li>"
+                + "<li>Godzina rozpoczęcia: " + appointment.getStartTime() + "</li>"
+                + "<li>Wybrany zabieg: " + procedure.getName() + "</li>"
+                + "<li>Przewidywany czas trwania zabiegu: " + procedure.getDuration() + " min</li>"
+                + "<li>Pracownik przeprowadzający zabieg: " + employee.getName() + "</li>"
+                + "</ul>"
+                + "<br>"
+
+                //TODO
+                // + "Jeśli chcesz odwołać wizytę, kliknij w <a href=\"" + cancellationLink + "\">ten link</a>."
+
+                + "<br><br>"
+                + "Do zobaczenia, zespół SzugajewEsthetic.";
+
+        helper.setText(messageText, true);
+
+
+        // Wysyłanie wiadomości
+        mailSender.send(message);
 
         return "redirect:appointments";
 
 
     }
-
-    private void sendConfirmationEmail(Appointment appointment) {
-        // Dane konfiguracyjne serwera SMTP
-        String host = "smtp.example.com";
-        int port = 587;
-        String username = "your_username";
-        String password = "your_password";
-
-        // Tworzenie właściwości dla sesji e-mail
-        Properties props = new Properties();
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", port);
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-
-        // Tworzenie autentykacji
-        Authenticator auth = new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        };
-
-        // Tworzenie sesji e-mail
-        Session session = Session.getInstance(props, auth);
-
-        try {
-            // Tworzenie wiadomości e-mail
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(appointment.getUserEmail()));
-            message.setSubject("Potwierdzenie wizyty");
-            message.setText("Potwierdzenie rezerwacji wizyty:\n\n" +
-                    "Data: " + appointment.getDate() + "\n" +
-                    "Godzina: " + appointment.getStartTime() + "\n" +
-                    "Procedura: " + appointment.getProcedureName() + "\n" +
-                    "Pracownik: " + appointment.getEmployeeName());
-
-            // Wysłanie wiadomości e-mail
-            Transport.send(message);
-
-            System.out.println("Wiadomość e-mail została wysłana z potwierdzeniem wizyty.");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            System.out.println("Wystąpił błąd podczas wysyłania wiadomości e-mail.");
-        }
-    }
-
-
 
 
     //endpoint dla pobierania listy zabiegow
