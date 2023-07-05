@@ -17,16 +17,11 @@ import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.entity.user.User;
+import pl.alekosszu.KME.mailSender.EmailService;
 import pl.alekosszu.KME.service.*;
 
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.net.Authenticator;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,7 +42,7 @@ public class AppointmentController {
     private final ScheduleService scheduleService;
     private final UserService userService;
 
-    private final JavaMailSender mailSender;
+    private final EmailService emailService;
 
 
 
@@ -92,16 +87,6 @@ public class AppointmentController {
         employeeService.addAppointmentToSchedule(appointment);
 
         // Wysyłanie wiadomości e-mail
-        jakarta.mail.internet.MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        // Konfiguracja treści wiadomości
-        helper.setTo(user.getEmail());
-        helper.setSubject("Potwierdzenie wizyty w SzugajewEsthetic");
-
-        //String cancellationLink = "https://example.com/cancel?email=" + user.getEmail();
-
-
         String messageText = "Witaj " + user.getFirstName() + "! "
                 + "<br><br>"
                 + "Twoja wizyta w SzugajewEsthetic Klinika Medycyny Estetycznej została zarezerwowana. Oto szczegóły wizyty:"
@@ -114,21 +99,12 @@ public class AppointmentController {
                 + "<li>Pracownik przeprowadzający zabieg: " + employee.getName() + "</li>"
                 + "</ul>"
                 + "<br>"
-
-                //TODO
-                // + "Jeśli chcesz odwołać wizytę, kliknij w <a href=\"" + cancellationLink + "\">ten link</a>."
-
                 + "<br><br>"
                 + "Do zobaczenia, zespół SzugajewEsthetic.";
 
-        helper.setText(messageText, true);
-
-
-        // Wysyłanie wiadomości
-        mailSender.send(message);
+        emailService.sendSimpleMessage(user.getEmail(), "Potwierdzenie wizyty w SzugajewEsthetic", messageText);
 
         return "redirect:appointments";
-
 
     }
 
