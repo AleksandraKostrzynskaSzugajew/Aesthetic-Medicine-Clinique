@@ -22,14 +22,16 @@
             var datepickerField = document.getElementById("datepicker");
             var nameField = document.getElementById("name");
 
-            datepickerField.addEventListener("input", updateNameField);
+            datepickerField.addEventListener("change", updateNameField);
 
             // Funkcja aktualizująca pole name
             function updateNameField() {
                 var date = datepickerField.value;
-                nameField.value = date;
+                var nameValue = date.substring(0, 10); // Pobierz tylko pierwsze 10 znaków (yyyy-mm-dd)
+                nameField.value = nameValue;
             }
         });
+
 
         $(function () {
             $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'});

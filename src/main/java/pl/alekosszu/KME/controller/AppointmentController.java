@@ -1,6 +1,7 @@
 package pl.alekosszu.KME.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,8 +57,7 @@ public class AppointmentController {
                                     @RequestParam(name = "scheduleId") Long scheduleId,
                                     @RequestParam(name = "hour")
                                     @DateTimeFormat(pattern = "HH:mm") LocalTime hour,
-                                    @RequestParam(name = "userId") Long userId)
-    {
+                                    @RequestParam(name = "userId") Long userId) {
 
         Appointment appointment = new Appointment();
         appointment.setProcedureId(procedureId);
@@ -129,70 +129,63 @@ public class AppointmentController {
     public List<LocalTime> getAvailableHours(Long procedureId, Long employeeId, Long scheduleId) {
         Procedure procedure = procedureService.findById(procedureId);
         Employee employee = employeeService.findById(employeeId);
-
-        // Pobierz grafik dla lekarza
         Schedule schedule = scheduleService.findById(scheduleId);
 
-        // Pobierz zajęte godziny dla danego dnia
         LocalDate date = schedule.getDate();
-        List<Appointment> occupiedTimes = scheduleService.findAppointmentsByScheduleId(scheduleId);
 
-
-
-        //tu zaczac jutro!!! Napisac metode ktora pobierze kazdy appointment i godziny kiedy sie zaczyna i konczy i te zarezerwuje w miedzyczasie
-
-        //nastepnie liste ktora bedzie miala wszystkie polgodzinne okresy dla danego dnia pracy
-
-        //wolne godziny to beda te ktore sa na liscie wszystkich po porownaniu i wyjeciu tych zajetych
-
-
-
-
-
-
-
-        System.out.println("================================================================");
-        System.out.println("occupied times = " + occupiedTimes);
-        System.out.println("===================================================================");
-
-        // Określ minimalną i maksymalną godzinę pracy lekarza
-        LocalTime minTime = schedule.getStartTime();
-        LocalTime maxTime = schedule.getEndTime();
-
-        // Określ interwał czasowy (np. 30 minut)
+        LocalTime employeesStartTime = schedule.getStartTime();
+        LocalTime employeesEndTime = schedule.getEndTime();
         Duration interval = Duration.ofMinutes(30);
 
-        // Lista dostępnych godzin
-        List<LocalTime> availableHours = new ArrayList<>();
+        // Obliczanie czasu trwania procedury
+        int durationInMinutes = procedure.getDuration();
+        Duration procedureDuration = Duration.ofMinutes(durationInMinutes);
 
-        // Sprawdź każdą godzinę w przedziale od minTime do maxTime
-        LocalTime timeOptionToAdd = minTime;
-        while (timeOptionToAdd.isBefore(maxTime)) {
-            if (!occupiedTimes.contains(timeOptionToAdd) && appointmentService.isEnoughTimeAvailable(employeeId, schedule.getId(), procedureId)
-                    && (schedule.getEndTime().isAfter(timeOptionToAdd.plusMinutes(procedure.getDuration())) || schedule.getEndTime().equals(timeOptionToAdd.plusMinutes(procedure.getDuration())))) {
-                availableHours.add(timeOptionToAdd);
+        // Odejmowanie czasu trwania procedury od czasu zakończenia pracy lekarza
+        LocalTime adjustedEndTime = employeesEndTime.minus(procedureDuration);
+
+        List<LocalTime> allAvailableHours = new ArrayList<>();
+        allAvailableHours.add(employeesStartTime);
+        LocalTime increasedTime = employeesStartTime;
+        boolean isAfterEmployeesWorkingHours = false;
+        while (!isAfterEmployeesWorkingHours) {
+            increasedTime = increasedTime.plus(interval);
+
+            boolean isDuringAppointment = false;
+            for (Appointment app : schedule.getScheduledAppointments()) {
+                LocalTime start = app.getStartTime();
+                LocalTime end = app.getEndTime();
+
+                if (start.equals(increasedTime) || (increasedTime.isAfter(start) && increasedTime.isBefore(end))) {
+                    isDuringAppointment = true;
+                    break;
+                }
             }
-            timeOptionToAdd = timeOptionToAdd.plus(interval);
+
+            if (!isDuringAppointment && !increasedTime.isAfter(adjustedEndTime)) {
+                allAvailableHours.add(increasedTime);
+            }
+
+            if (increasedTime.equals(employeesEndTime)) {
+                isAfterEmployeesWorkingHours = true;
+            }
         }
-        System.out.println("===========================================================================");
-        System.out.println(availableHours.toString());
-        System.out.println("===========================================================================");
 
-        return availableHours;
-
+        return allAvailableHours;
     }
+
 
     @GetMapping("/rmv")
     public String removeAppointmentById(@RequestParam Long employeeId,
-            @RequestParam Long scheduleId,
-            @RequestParam Long appointmentId){
+                                        @RequestParam Long scheduleId,
+                                        @RequestParam Long appointmentId) {
 
         Employee employee = employeeService.findById(employeeId);
         Schedule schedule = scheduleService.findById(scheduleId);
         Appointment appointment = appointmentService.findById(appointmentId);
 
-        for (Schedule s: employee.getSchedule()) {
-            if (s.getScheduledAppointments().contains(appointment)){
+        for (Schedule s : employee.getSchedule()) {
+            if (s.getScheduledAppointments().contains(appointment)) {
                 s.removeFromScheduledAppointments(appointment);
                 appointmentService.deleteById(appointmentId);
             }

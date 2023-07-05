@@ -48,6 +48,7 @@ public class Schedule {
     @OneToMany
     private List<Appointment> scheduledAppointments;
 
+
     public void addToScheduledAppointments(Appointment appointment) {
         scheduledAppointments.add(appointment);
 
