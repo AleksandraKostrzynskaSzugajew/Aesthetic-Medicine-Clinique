@@ -1,4 +1,4 @@
-package pl.alekosszu.KME.security;
+package pl.alekosszu.KME.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,17 +24,20 @@ public class RegistrationController {
     }
 
     @GetMapping("/register")
-    public String goToRegisterForm(Model model){
+    public String goToRegisterFormForUser(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user) {
-        Role role = roleService.findByName("user");
+        Role role = roleService.findByName("ROLE_USER");
         user.setRole(role);
         userService.registerNewUser(user);
 
         //if register successfull
         return "redirect:/login"; // Przekierowanie do strony logowania po rejestracji
-    }}
+    }
+
+
+}

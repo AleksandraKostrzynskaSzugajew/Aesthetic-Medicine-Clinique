@@ -55,6 +55,8 @@ public class User {
     private String phoneNumber1;
     private String phoneNumber2;
 
+    private boolean isAdmin;
+
     @ManyToOne
     private Role role;
 
@@ -64,6 +66,9 @@ public class User {
 //    @ManyToMany
 //    private Collection<Procedure> history;
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 
 
 }

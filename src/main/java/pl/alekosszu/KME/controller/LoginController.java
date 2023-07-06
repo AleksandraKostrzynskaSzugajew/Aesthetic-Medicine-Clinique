@@ -1,4 +1,4 @@
-package pl.alekosszu.KME.security;
+package pl.alekosszu.KME.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.alekosszu.KME.service.UserService;
 
 @Controller
-@RequestMapping("/user")
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -15,9 +14,14 @@ public class LoginController {
     private final UserService userService;
 
 
-    @GetMapping("/loggedin")
+    @GetMapping("/user/loggedin")
     public String loggedInFromForm(){
         return "loggedin";
+    }
+
+    @GetMapping("/admin/loggedinadm")
+    public String loggedInFromFormAsAdmin(){
+        return "adminloggedin";
     }
 
 
