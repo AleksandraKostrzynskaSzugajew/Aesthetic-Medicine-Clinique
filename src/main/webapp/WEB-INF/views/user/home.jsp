@@ -7,15 +7,16 @@
 
 <html>
 <head>
-    <title></title>
+    <title>Update user</title>
     <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
 </head>
 <body>
-<h3>Successfully logged in!</h3>
-<p><a href="/admin/homee">Admin options</a> </p>
-<p><a href="/user/loggedin">User options</a> </p>
-
-</p>
+<h2>Witaj, co chcesz zrobic? </h2>
+<p><a href="/user/createappointment/appointments">Umow sie na wizyte</a> </p>
+<p><a href="/user/displayme">Zobacz moje dane</a> </p>
+<p><a href="/user/editmydata?userId=${user.id}">Edytuj moje dane</a> </p>
+<p><a href="/user/createappointment/appointments">Przeglad moich wizyt</a> </p>
+<%--<form:hidden path="id"/>--%>
 </body>
 
 </html>

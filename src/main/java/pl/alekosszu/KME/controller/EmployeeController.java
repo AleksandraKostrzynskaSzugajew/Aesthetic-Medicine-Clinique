@@ -74,8 +74,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(Model model, @RequestParam Long id) {
-        Employee employee = employeeService.findById(id);
+    public String showEditForm(Model model, @RequestParam Long employeeId) {
+        Employee employee = employeeService.findById(employeeId);
         model.addAttribute("employee", employee);
         return "employee/edit";
 

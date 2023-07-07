@@ -7,13 +7,12 @@
 
 <html>
 <head>
-    <title></title>
+    <title>Update user</title>
     <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
 </head>
 <body>
-<h3>Successfully logged in!</h3>
-<p><a href="/admin/homee">Admin options</a> </p>
-<p><a href="/user/loggedin">User options</a> </p>
+<h3>Successfully registered and logged in!</h3>
+<p>Zalogowany jako: <sec:authentication property="principal.username" /></p>
 
 </p>
 </body>

@@ -27,7 +27,7 @@ public class ScheduleController {
     private final EmployeeService employeeService;
 
     @GetMapping("/save")
-    public String saveScheduleForm(Model model, @RequestParam Long id) {
+    public String saveScheduleForm(Model model, @RequestParam(name = "employeeId") Long id) {
         model.addAttribute("schedule", new Schedule());
         model.addAttribute("empId", id);
         return "schedule/save";

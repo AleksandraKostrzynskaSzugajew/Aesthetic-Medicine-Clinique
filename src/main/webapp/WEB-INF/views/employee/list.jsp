@@ -17,6 +17,7 @@
         <th>Performed procedures:</th>
         <th>Schedule:</th>
         <th>Appointments:</th>
+        <th>Add to schedule</th>
     </tr>
     <c:forEach items="${employees}" var="employee">
         <tr>
@@ -54,15 +55,20 @@
                     <a href="<c:url value='/emp/schedule/edit?employeeId=${employee.id}&scheduleId=${schedule.id}'/>">Edit Schedule</a>
                 </c:forEach>
             </td>
+            <td>
+                <a href="<c:url value='/emp/schedule/save?employeeId=${employee.id}'/>">Add to schedule</a>
+            </td>
         </tr>
-        <form:hidden path="id"/>
+        <tr>
+            <form:hidden path="id"/>
+        </tr>
     </c:forEach>
 </table>
 <br>
 <br>
-<td><a href="<c:url value='/admin/home' />">Go back home</a></td>
+<a href="<c:url value='/admin/home' />">Go back home</a>
 <br>
 <br>
-<td><a href="<c:url value='/admin/emp/save' />">Add new employee</a></td>
+<a href="<c:url value='/admin/emp/save' />">Add new employee</a>
 </body>
 </html>

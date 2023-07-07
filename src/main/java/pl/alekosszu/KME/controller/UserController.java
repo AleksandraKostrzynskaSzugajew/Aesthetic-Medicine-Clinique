@@ -13,6 +13,7 @@ import pl.alekosszu.KME.entity.user.Role;
 import pl.alekosszu.KME.entity.user.User;
 import pl.alekosszu.KME.service.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -61,6 +62,14 @@ public class UserController {
 
     }
 
+    @GetMapping("/edituser")
+    public String showEditFormForUser(Model model, @RequestParam Long id) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "user/edituser";
+
+    }
+
     @PostMapping("/edited")
     public String finalizeEdit(User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -71,11 +80,34 @@ public class UserController {
         return "redirect:findall";
     }
 
+    @PostMapping("/editedUser")
+    public String finalizeEditByUser(User user, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "user/edituser";
+//        }
 
-    @GetMapping("/home")
-    public String welcomeHomeUser(){
-        return "user/appdemo";
+        userService.update(user);
+        return "user/home";
     }
 
+
+    @GetMapping("/editmydata")
+    public String editMyData(Model model, Principal principal) {
+        String username = principal.getName(); // Pobierz nazwę zalogowanego użytkownika
+        User user = userService.findByEmail(username); // Pobierz użytkownika na podstawie emaila użytkownika
+        model.addAttribute("user", user);
+        return "user/edituser";
+    }
+
+    @GetMapping("/displayme")
+    public String displayMyData(Model model, Principal principal) {
+        String username = principal.getName(); // Pobierz nazwę zalogowanego użytkownika
+        User user = userService.findByEmail(username); // Pobierz użytkownika na podstawie emaila użytkownika
+        String dobString = user.getDob().toString();
+        model.addAttribute("dobString", dobString);
+        model.addAttribute("user", user);
+        return "user/displayme";
+
+    }
 
 }

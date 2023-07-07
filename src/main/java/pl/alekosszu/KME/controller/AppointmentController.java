@@ -97,7 +97,7 @@ public class AppointmentController {
 
         emailServiceImpl.sendMail(user.getEmail(), "Potwierdzenie wizyty w SzugajewEsthetic", messageText);
 
-        return "redirect:appointments";
+        return "user/successfullyMadeAnAppointment";
 
     }
 

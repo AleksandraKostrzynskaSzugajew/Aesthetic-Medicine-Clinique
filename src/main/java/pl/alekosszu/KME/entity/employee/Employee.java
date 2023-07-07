@@ -50,7 +50,7 @@ public class Employee {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Specialty> specialties;
 
-
+    @ToString.Exclude
     @ManyToMany
     @JoinTable(name = "employee_procedure")
     private Collection<Procedure> performedProcedures;

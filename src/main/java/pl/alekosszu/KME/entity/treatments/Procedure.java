@@ -39,7 +39,8 @@ public class Procedure {
     @ManyToOne
     private Category category;
 
-    @ManyToMany
+    @ToString.Exclude
+    @ManyToMany//(mappedBy="treatment")
     private Collection<Employee> employeesPerformingProcedure;
 
 

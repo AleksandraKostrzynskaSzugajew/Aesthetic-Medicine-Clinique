@@ -22,11 +22,16 @@
             <td>${procedure.duration}</td>
             <td>${procedure.cost}</td>
             <td>${procedure.category}</td>
-            <td>${procedure.employeesPerformingProcedure}</td>
+            <td>
+                <c:forEach items="${procedure.employeesPerformingProcedure}" var="employee">
+                    ${employee.name}<br/>
+                </c:forEach>
+            </td>
 
 
             <td><a href="<c:url value='/admin/procedure/edit?id=${procedure.id}'/>">Edit</a></td>
-            <td><a href="<c:url value='/admin/procedure/remove?id=${procedure.id}'/>" onclick="return confirm('Are you sure?')">Remove</a></td>
+            <td><a href="<c:url value='/admin/procedure/remove?id=${procedure.id}'/>"
+                   onclick="return confirm('Are you sure?')">Remove</a></td>
         </tr>
     </c:forEach>
 </table>

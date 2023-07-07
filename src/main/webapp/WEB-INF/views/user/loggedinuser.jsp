@@ -7,15 +7,18 @@
 
 <html>
 <head>
-    <title></title>
+    <title>Update user</title>
     <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
 </head>
 <body>
-<h3>Successfully logged in!</h3>
-<p><a href="/admin/homee">Admin options</a> </p>
-<p><a href="/user/loggedin">User options</a> </p>
+<h2>Swietnie, udalo Ci sie zarezerwowac wizyte!</h2>
+<p>Email z powierdzeniem powinien przyjsc na podany przez Ciebie adres email w ciagu kilku minut.</p>
+<br>
+<br>
+<br>
+<br>
 
-</p>
+<a href="/user/home">Powrot na strone glowna</a>
 </body>
 
 </html>
