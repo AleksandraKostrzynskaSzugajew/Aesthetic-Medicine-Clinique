@@ -18,7 +18,7 @@
 <br>
 <br>
 
-<a href="/user/home">Powrot na strone glowna</a>
+<a href="/user/loggedin">Powrot na strone glowna</a>
 </body>
 
 </html>

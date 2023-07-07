@@ -13,37 +13,31 @@
 For which procedure would you like to make an appointment?
 
 <form id="reservationForm" action="/user/createappointment/apposave" method="post">
-<%--    <label for="procedure">Treatment:</label>--%>
     <select id="procedureId" name="procedureId">
-        <option value="">Choose treatment</option>
+        <option value="" disabled selected hidden>Choose treatment</option> <!-- Pusta opcja z atrybutem disabled -->
     </select>
     <br>
-<br>
+    <br>
     Choose employee to perform procedure
     <br>
-<%--    <label for="doctor">Employee:</label>--%>
     <select id="employeeId" name="employeeId">
-        <option value="">Choose employee</option>
+        <option value="" disabled selected hidden>Choose employee</option> <!-- Pusta opcja z atrybutem disabled -->
     </select>
     <br>
-<br>
+    <br>
     Choose the most suitable day for your visit
-<%--    <label for="day">Dzień:</label>--%>
     <select id="scheduleId" name="scheduleId">
-        <option value="">Choose day</option>
+        <option value="" disabled selected hidden>Choose day</option> <!-- Pusta opcja z atrybutem disabled -->
     </select>
     <br>
-<br>
+    <br>
     What time would be the best for you?
-<%--    <label for="hour">Godzina:</label>--%>
     <select id="hour" name="hour">
-        <option value="">Choose time</option>
+        <option value="" disabled selected hidden>Choose time</option> <!-- Pusta opcja z atrybutem disabled -->
     </select>
 
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
     <input type="hidden" name="userId" value="${userId}"/>
-
     <button type="submit">Create my appointment!</button>
 </form>
 

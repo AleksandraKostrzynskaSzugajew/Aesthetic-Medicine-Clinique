@@ -16,6 +16,7 @@
 <p><a href="/user/displayme">Zobacz moje dane</a> </p>
 <p><a href="/user/editmydata?userId=${user.id}">Edytuj moje dane</a> </p>
 <p><a href="/user/createappointment/appointments">Przeglad moich wizyt</a> </p>
+<p><a href="/logout">Wyloguj</a> </p>
 <%--<form:hidden path="id"/>--%>
 </body>
 

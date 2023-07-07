@@ -103,43 +103,63 @@ public class AppointmentController {
 
 
     //endpoint dla pobierania listy zabiegow
+
     @GetMapping("/getprocedures")
     @ResponseBody
     public List<Procedure> getAllProcedures() {
-        List<Procedure> all =
-                procedureService.findAll();
+        List<Procedure> all = procedureService.findAll();
+
+        // Tworzenie wpisu "Choose procedure"
+        Procedure chooseProcedure = new Procedure();
+        chooseProcedure.setId(0L);
+        chooseProcedure.setName("Choose procedure");
+
+        // Dodawanie wpisu "Choose procedure" na początku listy
+        all.add(0, chooseProcedure);
+
         return all;
     }
+
 
     //endpoint dla pobierania listy lekarzy zaleznie od wybranego zabiegu
     @GetMapping("/getemployees")
     @ResponseBody
-    // public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
     public Collection<Employee> getEmployeesForProcedure(@RequestParam Long procedureId) {
-        Collection<Employee> all =
-                procedureService.findEmployeesPerformingProcedureById(procedureId);
+        Collection<Employee> all = procedureService.findEmployeesPerformingProcedureById(procedureId);
 
-        return all;
+        Employee chooseEmployee = new Employee();
+        chooseEmployee.setId(0L);
+        chooseEmployee.setFirstName("Choose employee");
+        chooseEmployee.setLastName("");
+
+        List<Employee> updatedList = new ArrayList<>();
+        updatedList.add(chooseEmployee);
+        updatedList.addAll(all);
+
+        return updatedList;
     }
+
 
 
     //endpoint dla pobierania listy dat z grafiku konkretnego lekarza
     @GetMapping("/getdates")
     @ResponseBody
     public List<Schedule> findScheduleDatesByEmployeeId(@RequestParam("employeeId") Long employeeId) {
-
         List<Schedule> schedules = scheduleService.findSchedulesByEmployeeId(employeeId);
 
-        List<LocalDate> dates = new ArrayList<>();
-        for (Schedule s : schedules) {
-            dates.add(s.getDate());
-        }
+        // Tworzenie wpisu "Choose day"
+        Schedule chooseDay = new Schedule();
+        chooseDay.setId(0L);
+        chooseDay.setDate(null);
 
-        System.out.println("==============================================");
-        System.out.println(dates.toString());
+        // Dodawanie wpisu "Choose day" na początku listy
+        List<Schedule> updatedList = new ArrayList<>();
+        updatedList.add(chooseDay);
+        updatedList.addAll(schedules);
 
-        return schedules;
+        return updatedList;
     }
+
 
     //pobieranie gostepnych godzin z grafiku konkretnego lekarza na konkretny dzien
     @GetMapping("/gah")
