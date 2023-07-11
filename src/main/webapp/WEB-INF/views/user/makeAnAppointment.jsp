@@ -41,11 +41,21 @@ For which procedure would you like to make an appointment?
     <button type="submit">Create my appointment!</button>
 
     <div>
-        There is no suitable hour available? Fill the form below and wait to be notified via email in case desired time is available.
+        <br>
+        <br>
+        <br>
+        <br>
+        There is no suitable hour available?
+        <br>
+        <br>
+        <br>
+        <a href="/user/createappointment/joinwaitlist">Click here to fill the form and be notified when desired hour is available!</a>
 
 
     </div>
 </form>
+
+
 
 <script src="/js/script.js"></script>
 </body>

@@ -140,7 +140,6 @@ public class AppointmentController {
     }
 
 
-
     //endpoint dla pobierania listy dat z grafiku konkretnego lekarza
     @GetMapping("/getdates")
     @ResponseBody
@@ -230,6 +229,12 @@ public class AppointmentController {
 
         }
         return "adminHome";
+    }
+
+    @GetMapping("/takenhours")
+    @ResponseBody
+    public Collection<LocalTime> getTakenHours(Long scheduleId) {
+        return appointmentService.getReservedHours(scheduleId);
     }
 
 

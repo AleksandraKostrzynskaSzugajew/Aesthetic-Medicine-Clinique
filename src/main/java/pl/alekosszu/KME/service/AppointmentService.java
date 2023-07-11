@@ -16,6 +16,8 @@ import pl.alekosszu.KME.repository.ScheduleRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -26,6 +28,7 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final ScheduleService scheduleService;
     private final ProcedureService procedureService;
+    private final EmployeeService employeeService;
 
 
     public void save(Appointment appointment) {
@@ -49,45 +52,17 @@ public class AppointmentService {
     }
 
 
-//    public boolean isEnoughTimeAvailable(Long employeeId, Long scheduleId, Long procedureId) {
-//        Procedure procedure = procedureService.findById(procedureId);
-//        Schedule schedule = scheduleService.findById(scheduleId);
-//
-//        LocalTime employeesStartTime = schedule.getStartTime();
-//        LocalTime employeesEndTime = schedule.getEndTime();
-//
-//        // Oblicz czas trwania procedury w minutach
-//        int procedureDuration = procedure.getDuration();
-//
-//        // Oblicz planowany czas zakończenia procedury
-//        LocalTime procedureEndTime = employeesStartTime.plusMinutes(procedureDuration);
-//
-//        // Sprawdź, czy czas zakończenia procedury mieści się w ramach czasu pracy lekarza
-//        boolean isWithinWorkingHours = procedureEndTime.isBefore(employeesEndTime);
-//
-//        if (!isWithinWorkingHours) {
-//            return false; // Procedura kończy się poza godzinami pracy lekarza
-//        }
-//
-//        // Pobierz zajęte godziny z grafiku na żądany dzień
-//        List<LocalTime> occupiedTimes = scheduleService.f(employeeId, scheduleId);
-//
-//        // Sprawdź, czy istnieje pokrywanie się zajętych godzin
-//        for (LocalTime occupiedTime : occupiedTimes) {
-//            LocalTime occupiedEndTime = occupiedTime.plusMinutes(procedureDuration);
-//
-//            // Sprawdź, czy czas rozpoczęcia lub zakończenia wizyty znajduje się w granicach czasu
-//            if ((occupiedTime.isAfter(employeesStartTime) && occupiedTime.isBefore(procedureEndTime))
-//                    || (occupiedEndTime.isAfter(employeesStartTime) && occupiedEndTime.isBefore(procedureEndTime))) {
-//                return false; // Istnieje pokrywanie się wizyt w grafiku
-//            }
-//        }
-//
-//        return true; // Nie ma pokrywających się wizyt
-//    }
-
-
-
+    public Collection<LocalTime> getReservedHours(Long scheduleId) {
+        List<LocalTime> takenHours = new ArrayList<>();
+       // Employee employee = employeeService.findById(employeeId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        Collection<Appointment> appointmentsForRequestedDay = schedule.getScheduledAppointments();
+        Collection<LocalTime> takenStartHours = new ArrayList<>();
+        for (Appointment a : appointmentsForRequestedDay) {
+            takenStartHours.add(a.getStartTime());
+        }
+        return takenStartHours;
+    }
 
 
 }
