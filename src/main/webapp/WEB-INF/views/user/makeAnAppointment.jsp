@@ -39,6 +39,12 @@ For which procedure would you like to make an appointment?
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="hidden" name="userId" value="${userId}"/>
     <button type="submit">Create my appointment!</button>
+
+    <div>
+        There is no suitable hour available? Fill the form below and wait to be notified via email in case desired time is available.
+
+
+    </div>
 </form>
 
 <script src="/js/script.js"></script>

@@ -13,8 +13,6 @@ import java.util.List;
 public interface ProcedureRepository extends JpaRepository<Procedure, Long> {
 
 
-
-
     @Query("SELECT e FROM Employee e " +
             "JOIN e.performedProcedures p " +
             "WHERE p.id = :procedureId")
