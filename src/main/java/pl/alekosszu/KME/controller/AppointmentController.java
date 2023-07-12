@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Controller
 @RequestMapping("/user/createappointment")
@@ -232,7 +233,13 @@ public class AppointmentController {
     }
 
     @GetMapping("/joinwaitlist")
-    public String goToWaitListForm() {
+    public String goToWaitListForm(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // Assuming the userId is stored as the username
+        Long userId = userService.findByEmail(email).getId();
+
+        model.addAttribute("userId", userId);
+
         return "user/addToWaitList";
     }
 
@@ -242,6 +249,12 @@ public class AppointmentController {
         return appointmentService.getReservedHours(scheduleId);
     }
 
+//    @PostMapping("/towait")
+//    public String addMeToWaitingList() {
+//        return;
+//
+//        //nie przekazuje sie userid
+//    }
 
 }
 
