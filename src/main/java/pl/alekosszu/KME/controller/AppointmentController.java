@@ -2,6 +2,7 @@ package pl.alekosszu.KME.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -75,7 +76,9 @@ public class AppointmentController {
         appointment.setUserId(userId);
         appointment.setScheduleId(scheduleId);
 
+        appointment.setStatus("planned");
         appointmentService.save(appointment);
+        appointmentService.addToHistory(appointment);
 
         employeeService.addAppointmentToSchedule(appointment);
 
@@ -230,6 +233,29 @@ public class AppointmentController {
 
         }
         return "adminHome";
+    }
+
+
+    @PreAuthorize("isAuthenticated()") //aby wymusić uwierzytelnienie użytkownika przed wykonaniem operacji
+    @PostMapping("/cancelappointment")
+    public String cancelAppointment(@RequestParam Long appointmentId) {
+        Appointment appointment = appointmentService.findById(appointmentId);
+        Long loggedUserId = userService.getCurrentUser();
+
+        Long employeeId = appointment.getEmployeeId();
+        Employee employee = employeeService.findById(employeeId);
+        Long scheduleId = appointment.getScheduleId();
+        Schedule schedule = scheduleService.findById(scheduleId);
+
+        if (appointment.getUserId() == loggedUserId) {
+            for (Schedule s : employee.getSchedule()) {
+                if (s.getScheduledAppointments().contains(appointment)) {
+                    s.removeFromScheduledAppointments(appointment);
+                    appointmentService.deleteById(appointmentId);
+                }
+
+            }
+        } return "user/home";
     }
 
     @GetMapping("/joinwaitlist")

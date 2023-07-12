@@ -12,7 +12,7 @@
 
 For which procedure would you like to make an appointment?
 
-<form id="reservationForm" action="/user/createappointment/towait" method="post">
+<form id="reservationForm" action="/user/createappointment/joinwaitlist" method="post">
     <select id="procedureId" name="procedureId">
         <option value="" disabled selected hidden>Choose treatment</option> <!-- Pusta opcja z atrybutem disabled -->
     </select>

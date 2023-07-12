@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -63,12 +64,29 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Procedure> wishList;
 
-//    @ManyToMany
-//    private Collection<Procedure> history;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Collection<Wish> wishes;
+
+    @OneToMany
+    private List<Appointment> history;
+
 
     public boolean isAdmin() {
         return isAdmin;
     }
+
+    public void addToWishList(Wish wish){
+        wishes.add(wish);
+    }
+
+    public void removeFromWishList(Wish wish){
+        wishes.remove(wish);
+    }
+
+    public void addToHistory(Appointment appointment){
+        history.add(appointment);
+    }
+
 
 
 }

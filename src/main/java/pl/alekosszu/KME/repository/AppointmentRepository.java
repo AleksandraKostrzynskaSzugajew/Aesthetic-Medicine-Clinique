@@ -9,4 +9,5 @@ import java.time.LocalTime;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
+
 }

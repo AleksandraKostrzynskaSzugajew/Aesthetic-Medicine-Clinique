@@ -7,16 +7,16 @@
 
 <html>
 <head>
-    <title>Update user</title>
+    <title>User menu</title>
     <%--  <link rel="stylesheet" href="<c:url value='/static/css/style.css'/>">--%>
 </head>
 <body>
-<h2>Witaj, co chcesz zrobic? </h2>
-<p><a href="/user/createappointment/appointments">Umow sie na wizyte</a> </p>
-<p><a href="/user/displayme">Zobacz moje dane</a> </p>
-<p><a href="/user/editmydata?userId=${user.id}">Edytuj moje dane</a> </p>
-<p><a href="/user/createappointment/appointments">Przeglad moich wizyt</a> </p>
-<p><a href="/logout">Wyloguj</a> </p>
+<h2>Welcome, what would you like to do? </h2>
+<p><a href="/user/createappointment/appointments">Make an appointment</a> </p>
+<p><a href="/user/displayme">Show me my personal data</a> </p>
+<p><a href="/user/editmydata?userId=${user.id}">Edit my personal data</a> </p>
+<p><a href="/user/history">Browse my appointments</a> </p>
+<p><a href="/logout">Log out</a> </p>
 <%--<form:hidden path="id"/>--%>
 </body>
 

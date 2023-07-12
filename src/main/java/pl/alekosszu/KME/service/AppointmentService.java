@@ -10,6 +10,9 @@ import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Category;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
+import pl.alekosszu.KME.entity.user.AppointmentHistory;
+import pl.alekosszu.KME.entity.user.User;
+import pl.alekosszu.KME.entity.user.Wish;
 import pl.alekosszu.KME.repository.AppointmentRepository;
 import pl.alekosszu.KME.repository.CategoryRepository;
 import pl.alekosszu.KME.repository.ScheduleRepository;
@@ -27,8 +30,8 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final ScheduleService scheduleService;
-    private final ProcedureService procedureService;
-    private final EmployeeService employeeService;
+    private final WishService wishService;
+    private final AppointmentHistoryService appointmentHistoryService;
 
 
     public void save(Appointment appointment) {
@@ -48,6 +51,23 @@ public class AppointmentService {
     }
 
     public void deleteById(Long id) {
+
+        AppointmentHistory appointmentHistory = appointmentHistoryService.findByAppointmentId(id);
+
+        if (appointmentHistory != null) {
+            appointmentHistory.setStatus("canceled");
+            appointmentHistoryService.save(appointmentHistory);
+        }
+
+        Appointment appointment = findById(id);
+        Collection<Wish> wishes = wishService.findIfSimilarRequestExists(appointment);
+
+        for (Wish w : wishes) {
+            wishService.sendAnEmailAboutTermAvailability(w);
+            User user = w.getUser();
+            user.removeFromWishList(w);
+            wishService.deleteById(w.getId());
+        }
         appointmentRepository.deleteById(id);
     }
 
@@ -74,7 +94,18 @@ public class AppointmentService {
         return takenHours;
     }
 
-
-
+    public void addToHistory(Appointment appointment) {
+        AppointmentHistory appointmentHistory = new AppointmentHistory();
+        appointmentHistory.setAppointmentId(appointment.getId());
+        appointmentHistory.setDate(appointment.getDate());
+        appointmentHistory.setEmployeeId(appointment.getEmployeeId());
+        appointmentHistory.setProcedureId(appointment.getProcedureId());
+        appointmentHistory.setEndTime(appointment.getEndTime());
+        appointmentHistory.setStartTime(appointment.getStartTime());
+        appointmentHistory.setScheduleId(appointment.getScheduleId());
+        appointmentHistory.setUserId(appointment.getUserId());
+        appointmentHistory.setStatus(appointment.getStatus());
+        appointmentHistoryService.save(appointmentHistory);
+    }
 
 }

@@ -2,6 +2,8 @@ package pl.alekosszu.KME.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.alekosszu.KME.entity.user.Role;
@@ -55,4 +57,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-}
+    public Long getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // Assuming the userId is stored as the username
+        Long userId = findByEmail(email).getId();
+        return userId;
+    }
+};
