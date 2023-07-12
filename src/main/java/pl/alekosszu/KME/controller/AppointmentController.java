@@ -231,9 +231,14 @@ public class AppointmentController {
         return "adminHome";
     }
 
+    @GetMapping("/joinwaitlist")
+    public String goToWaitListForm() {
+        return "user/addToWaitList";
+    }
+
     @GetMapping("/takenhours")
     @ResponseBody
-    public Collection<LocalTime> getTakenHours(Long scheduleId) {
+    public Collection<LocalTime> getTakenHours(@RequestParam Long scheduleId) {
         return appointmentService.getReservedHours(scheduleId);
     }
 

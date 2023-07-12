@@ -52,17 +52,29 @@ public class AppointmentService {
     }
 
 
-    public Collection<LocalTime> getReservedHours(Long scheduleId) {
-        List<LocalTime> takenHours = new ArrayList<>();
-       // Employee employee = employeeService.findById(employeeId);
+    public List<LocalTime> getReservedHours(Long scheduleId) {
         Schedule schedule = scheduleService.findById(scheduleId);
-        Collection<Appointment> appointmentsForRequestedDay = schedule.getScheduledAppointments();
-        Collection<LocalTime> takenStartHours = new ArrayList<>();
-        for (Appointment a : appointmentsForRequestedDay) {
-            takenStartHours.add(a.getStartTime());
+        List<Appointment> appointmentsForRequestedDay = schedule.getScheduledAppointments();
+        List<LocalTime> takenHours = new ArrayList<>();
+
+        for (Appointment appointment : appointmentsForRequestedDay) {
+            LocalTime startTime = appointment.getStartTime();
+            LocalTime endTime = appointment.getEndTime();
+
+            // Iteruj przez godziny od startTime do endTime i dodawaj do listy takenHours
+            LocalTime currentTime = startTime;
+            while (currentTime.isBefore(endTime)) {
+                takenHours.add(currentTime);
+                currentTime = currentTime.plusMinutes(30);
+            }
         }
-        return takenStartHours;
+
+        System.out.println("=======================================");
+        System.out.println(takenHours);
+        return takenHours;
     }
+
+
 
 
 }
