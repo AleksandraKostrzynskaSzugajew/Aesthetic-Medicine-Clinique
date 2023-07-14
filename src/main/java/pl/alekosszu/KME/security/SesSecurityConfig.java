@@ -22,14 +22,14 @@ public class SesSecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    @Value("${spring.websecurity.debug:false}")
-    boolean webSecurityDebug;
-
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.debug(webSecurityDebug);
-    }
+//    @Value("${spring.websecurity.debug:false}")
+//    boolean webSecurityDebug;
+//
+//
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.debug(webSecurityDebug);
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

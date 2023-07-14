@@ -13,6 +13,7 @@ import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.entity.user.User;
+import pl.alekosszu.KME.entity.user.Wish;
 import pl.alekosszu.KME.mailSender.EmailServiceImpl;
 import pl.alekosszu.KME.service.*;
 
@@ -38,6 +39,7 @@ public class AppointmentController {
     private final UserService userService;
 
     private final EmailServiceImpl emailServiceImpl;
+    private final WishService wishService;
 
 
     @GetMapping("/appointments")
@@ -236,11 +238,11 @@ public class AppointmentController {
     }
 
 
-    @PreAuthorize("isAuthenticated()") //aby wymusić uwierzytelnienie użytkownika przed wykonaniem operacji
     @PostMapping("/cancelappointment")
     public String cancelAppointment(@RequestParam Long appointmentId) {
         Appointment appointment = appointmentService.findById(appointmentId);
         Long loggedUserId = userService.getCurrentUser();
+
 
         Long employeeId = appointment.getEmployeeId();
         Employee employee = employeeService.findById(employeeId);
@@ -252,10 +254,19 @@ public class AppointmentController {
                 if (s.getScheduledAppointments().contains(appointment)) {
                     s.removeFromScheduledAppointments(appointment);
                     appointmentService.deleteById(appointmentId);
+                    if (appointment.getStatus().equals("planned")) {
+                        appointment.setStatus("canceled");
+                        appointmentService.save(appointment);
+                        Collection<Wish> wishes = wishService.findIfSimilarRequestExists(appointment);
+                        for (Wish w : wishes) {
+                            wishService.sendAnEmailAboutTermAvailability(w);
+                        }
+                    }
                 }
 
             }
-        } return "user/home";
+        }
+        return "user/home";
     }
 
     @GetMapping("/joinwaitlist")
@@ -269,18 +280,31 @@ public class AppointmentController {
         return "user/addToWaitList";
     }
 
+    @PostMapping("/joinwaitlist")
+    public String getDataFromAddToWaitListForm(@RequestParam(name = "procedureId") Long procedureId,
+                                               @RequestParam(name = "employeeId") Long employeeId,
+                                               @RequestParam(name = "scheduleId") Long scheduleId,
+                                               @RequestParam(name = "hour") @DateTimeFormat(pattern = "HH:mm") LocalTime hour,
+                                               @RequestParam(name = "userId") Long userId) {
+        Schedule schedule = scheduleService.findById(scheduleId);
+
+        Wish wish = new Wish();
+        wish.setAppointmentDay(schedule.getDate());
+        wish.setUser(userService.findById(userId));
+        wish.setProcedureId(procedureId);
+        wish.setEmployeeId(employeeId);
+        wish.setAppointmentTime(hour);
+        wishService.save(wish);
+
+        return "user/addToWaitList";
+    }
+
     @GetMapping("/takenhours")
     @ResponseBody
     public Collection<LocalTime> getTakenHours(@RequestParam Long scheduleId) {
         return appointmentService.getReservedHours(scheduleId);
     }
 
-//    @PostMapping("/towait")
-//    public String addMeToWaitingList() {
-//        return;
-//
-//        //nie przekazuje sie userid
-//    }
 
 }
 

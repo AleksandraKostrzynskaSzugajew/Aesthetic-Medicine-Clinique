@@ -16,6 +16,7 @@
         <th>Start Time</th>
         <th>End Time</th>
         <th>Procedure</th>
+        <th>Status</th>
         <th>Cancel Appointment</th>
     </tr>
     <c:forEach var="appointment" items="${future}">
@@ -24,15 +25,20 @@
             <td>${appointment.startTime}</td>
             <td>${appointment.endTime}</td>
             <td>${appointment.procedureId}</td>
-            <td>
-                <form action="createappointment/cancelappointment" method="post">
-                    <input type="hidden" name="appointmentId" value="${appointment.appointmentId}" />
-                    <button type="submit">Cancel</button>
-                </form>
-            </td>
+            <td>${appointment.status}</td>
+            <c:if test="${appointment.status == 'planned'}">
+                <td>
+                    <form action="createappointment/cancelappointment?appointmentId=${appointment.appointmentId}" method="post">
+                        <input type="hidden" name="appointmentId" value="${appointment.appointmentId}" />
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button type="submit">Cancel</button>
+                    </form>
+                </td>
+            </c:if>
         </tr>
     </c:forEach>
 </table>
+
 
 <h2>Past Appointments:</h2>
 <table>
