@@ -246,8 +246,6 @@ public class AppointmentController {
 
         Long employeeId = appointment.getEmployeeId();
         Employee employee = employeeService.findById(employeeId);
-        Long scheduleId = appointment.getScheduleId();
-        Schedule schedule = scheduleService.findById(scheduleId);
 
         if (appointment.getUserId() == loggedUserId) {
             for (Schedule s : employee.getSchedule()) {
@@ -272,7 +270,7 @@ public class AppointmentController {
     @GetMapping("/joinwaitlist")
     public String goToWaitListForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName(); // Assuming the userId is stored as the username
+        String email = authentication.getName();
         Long userId = userService.findByEmail(email).getId();
 
         model.addAttribute("userId", userId);

@@ -110,4 +110,9 @@ public class UserController {
 
     }
 
+    @GetMapping("/home")
+    public String getUserToHisHomepage(){
+        return "user/home";
+    }
+
 }

@@ -4,6 +4,9 @@
 <html>
 <head>
     <title>Appointment maker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 <h3>Add me to waiting list</h3>
@@ -38,9 +41,28 @@ For which procedure would you like to make an appointment?
 
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <input type="hidden" name="userId" value="${userId}"/>
-    <button type="submit">Notify me</button>
+    <button type="submit" id="notifyButton">Notify me</button>
 
 </form>
+
+
+<a href="<c:url value='/user/home'/>">Home page</a>
+
+
+<!-- Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Your request has been successfully submitted. We will notify you when needed.
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

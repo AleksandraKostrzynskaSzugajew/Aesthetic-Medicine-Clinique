@@ -12,6 +12,7 @@ import pl.alekosszu.KME.mailSender.EmailServiceImpl;
 import pl.alekosszu.KME.repository.WishRepository;
 
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +52,6 @@ public class WishService {
 
     public Collection<Wish> findIfSimilarRequestExists(Appointment appointmentToBeDeleted) {
         Collection<Wish> allClientsWishes = findAll();
-
         Collection<Wish> matchingWishes = new ArrayList<>();
 
         Duration durationOfProcedureFromAppointment = Duration.between(appointmentToBeDeleted.getStartTime(), appointmentToBeDeleted.getEndTime());
@@ -61,15 +61,37 @@ public class WishService {
             Duration durationOfTheProcedureFromWish = Duration.ofMinutes(procedureFromWish.getDuration());
 
             if (appointmentToBeDeleted.getEmployeeId().equals(w.getEmployeeId())
-                    && appointmentToBeDeleted.getDate().equals(w.getAppointmentDay())
-                    && appointmentToBeDeleted.getStartTime().equals(w.getAppointmentTime())) {
+                    && appointmentToBeDeleted.getDate().equals(w.getAppointmentDay())) {
+
+                // Tworzenie listy odcinków czasowych dla odwoływanej procedury
+                List<LocalTime> appointmentTimeRange = new ArrayList<>();
+                LocalTime startTime = appointmentToBeDeleted.getStartTime();
+                while (startTime.isBefore(appointmentToBeDeleted.getEndTime())) {
+                    appointmentTimeRange.add(startTime);
+                    startTime = startTime.plusMinutes(30); // Przesuwaj się co pół godziny
+                }
+
+                // Sprawdzanie, czy którykolwiek z odcinków czasowych znajduje się na liście życzeń
+                for (LocalTime appointmentTime : appointmentTimeRange) {
+                    if (appointmentTime.equals(w.getAppointmentTime())) {
+                        matchingWishes.add(w);
+                        break; // Przerywa tylko aktualną iterację, nie całą pętlę
+                    }
+                }
+
+                // Dodatkowy warunek dla porównywania czasu trwania procedury
                 if (durationOfProcedureFromAppointment.equals(durationOfTheProcedureFromWish)
-                        || durationOfTheProcedureFromWish.compareTo(durationOfProcedureFromAppointment) <= 0)
+                        || durationOfTheProcedureFromWish.compareTo(durationOfProcedureFromAppointment) <= 0) {
                     matchingWishes.add(w);
+                }
             }
         }
+
         return matchingWishes;
     }
+
+
+
 
     public void sendAnEmailAboutTermAvailability(Wish wish) {
 
@@ -95,8 +117,9 @@ public class WishService {
                 + "Hurry up, until somebody else grabs your term!"
                 + "<br>"
                 + "<br><br>"
-                + "Best regards," +
-                " SzugajewEsthetic.";
+                + "Best regards"
+                + "<br>"
+                +" SzugajewEsthetic.";
         emailServiceImpl.sendMail(user.getEmail(), subject, body);
     }
 

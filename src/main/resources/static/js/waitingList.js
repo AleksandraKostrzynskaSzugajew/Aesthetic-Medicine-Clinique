@@ -82,3 +82,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 })
+
+$(document).ready(function() {
+    $("#reservationForm").submit(function(e) {
+        e.preventDefault(); // Przerywa domyślne zachowanie formularza
+
+        // Wyślij żądanie AJAX do serwera
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("action"),
+            data: $(this).serialize(),
+            success: function() {
+                // Pokaż modala po pomyślnym wysłaniu danych
+                $("#successModal").modal("show");
+            },
+            error: function() {
+                // Obsłuż błąd żądania AJAX (opcjonalnie)
+            }
+        });
+    });
+});
