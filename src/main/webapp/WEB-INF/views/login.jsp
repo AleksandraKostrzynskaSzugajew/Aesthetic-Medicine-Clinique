@@ -12,6 +12,14 @@
     <div><label> Password: <input type="password" name="password"/> </label></div>
     <div><input type="submit" value="Sign In"/></div>
     <div>
+        <br>
+        <br>
+        <br>
+        <a href="/oauth2/authorization/google">Zaloguj przez Google</a>
+
+        <br>
+        <br>
+        <br>
         Do not have an account yet?
         <a href="<c:url value='/register'/>">Click here to register!</a>
     </div>

@@ -54,3 +54,9 @@ spring:
       org:
         springframework:
           security: DEBUG
+
+  google:
+    client:
+      client-id: 822028440618-vpt6fihn9lmd9nl2g4j5d1rgjl05abib.apps.googleusercontent.com
+      client-secret: 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
+

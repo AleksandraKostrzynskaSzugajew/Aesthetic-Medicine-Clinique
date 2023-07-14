@@ -231,6 +231,14 @@ public class AppointmentController {
             if (s.getScheduledAppointments().contains(appointment)) {
                 s.removeFromScheduledAppointments(appointment);
                 appointmentService.deleteById(appointmentId);
+                if (appointment.getStatus().equals("planned")) {
+                    appointment.setStatus("canceled");
+                    appointmentService.save(appointment);
+                    Collection<Wish> wishes = wishService.findIfSimilarRequestExists(appointment);
+                    for (Wish w : wishes) {
+                        wishService.sendAnEmailAboutTermAvailability(w);
+                    }
+                }
             }
 
         }
