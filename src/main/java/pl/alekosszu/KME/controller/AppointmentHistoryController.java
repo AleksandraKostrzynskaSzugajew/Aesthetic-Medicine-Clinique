@@ -51,9 +51,6 @@ public class AppointmentHistoryController {
         model.addAttribute("past", past);
         model.addAttribute("future", future);
 
-        System.out.println("====================================");
-        System.out.println(future);
-        System.out.println(past);
         return "user/history";
 
 

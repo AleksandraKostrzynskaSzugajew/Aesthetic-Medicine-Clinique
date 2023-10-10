@@ -6,6 +6,6 @@ public interface EmailService {
     String sendMail(String to, String subject, String body);
 
 
-    //more elaborated version
+    //elaborated version
     // String sendMail(MultipartFile[] file, String to, String[] cc, String subject, String body);
 }

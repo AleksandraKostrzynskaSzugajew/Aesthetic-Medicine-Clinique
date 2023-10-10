@@ -13,10 +13,6 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 
-//    @Override
-//    @EntityGraph(attributePaths = {"treatment"})
-//    List<Employee> findAll();
-
     @Query("SELECT s FROM Employee e JOIN e.schedule s WHERE e.id = :employeeId AND s.date = :date")
     Schedule findScheduleByDate(Long employeeId, LocalDate date);
 }

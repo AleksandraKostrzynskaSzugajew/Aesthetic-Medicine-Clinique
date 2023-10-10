@@ -28,9 +28,7 @@ public class ProcedureController {
     @ModelAttribute("categories")
     public List<Category> categories() {
         return categoryService.findAll();
-
     }
-;;;
 
     @ModelAttribute("empForPro")
     public List<Employee> employeesPerformingProcedure() {

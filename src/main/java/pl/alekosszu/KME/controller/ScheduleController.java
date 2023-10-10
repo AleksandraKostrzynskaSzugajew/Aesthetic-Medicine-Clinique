@@ -102,14 +102,14 @@ public class ScheduleController {
 
     @GetMapping("/rmv")
     public String removeAppointmentById(@RequestParam Long employeeId,
-                                        @RequestParam Long scheduleId){
+                                        @RequestParam Long scheduleId) {
 
         Employee employee = employeeService.findById(employeeId);
         Schedule schedule = scheduleService.findById(scheduleId);
 
 
-        for (Schedule s: employee.getSchedule()) {
-            if (s.getId()==scheduleId){
+        for (Schedule s : employee.getSchedule()) {
+            if (s.getId() == scheduleId) {
                 employee.removeScheduleItem(schedule);
                 scheduleService.deleteById(scheduleId);
             }

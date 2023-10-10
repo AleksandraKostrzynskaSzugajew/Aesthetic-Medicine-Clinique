@@ -1,9 +1,11 @@
 package pl.alekosszu.KME.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.alekosszu.KME.entity.employee.Employee;
+import pl.alekosszu.KME.entity.employee.Schedule;
 import pl.alekosszu.KME.entity.treatments.Procedure;
 import pl.alekosszu.KME.entity.user.Appointment;
 import pl.alekosszu.KME.entity.user.User;
@@ -26,6 +28,10 @@ public class WishService {
     private final WishRepository wishRepository;
     private final ProcedureService procedureService;
     private final EmailServiceImpl emailServiceImpl;
+    private final UserService userService;
+    private final ScheduleService scheduleService;
+    private final AppointmentService appointmentService;
+    private final WishService wishService;
     private final EmployeeService employeeService;
 
 
@@ -63,23 +69,19 @@ public class WishService {
             if (appointmentToBeDeleted.getEmployeeId().equals(w.getEmployeeId())
                     && appointmentToBeDeleted.getDate().equals(w.getAppointmentDay())) {
 
-                // Tworzenie listy odcinków czasowych dla odwoływanej procedury
                 List<LocalTime> appointmentTimeRange = new ArrayList<>();
                 LocalTime startTime = appointmentToBeDeleted.getStartTime();
                 while (startTime.isBefore(appointmentToBeDeleted.getEndTime())) {
                     appointmentTimeRange.add(startTime);
-                    startTime = startTime.plusMinutes(30); // Przesuwaj się co pół godziny
+                    startTime = startTime.plusMinutes(30);
                 }
 
-                // Sprawdzanie, czy którykolwiek z odcinków czasowych znajduje się na liście życzeń
                 for (LocalTime appointmentTime : appointmentTimeRange) {
                     if (appointmentTime.equals(w.getAppointmentTime())) {
                         matchingWishes.add(w);
-                        break; // Przerywa tylko aktualną iterację, nie całą pętlę
+                        break;
                     }
                 }
-
-                // Dodatkowy warunek dla porównywania czasu trwania procedury
                 if (durationOfProcedureFromAppointment.equals(durationOfTheProcedureFromWish)
                         || durationOfTheProcedureFromWish.compareTo(durationOfProcedureFromAppointment) <= 0) {
                     matchingWishes.add(w);
@@ -91,37 +93,25 @@ public class WishService {
     }
 
 
-
-
+    @Async
     public void sendAnEmailAboutTermAvailability(Wish wish) {
-
-        Procedure procedure = procedureService.findById(wish.getProcedureId());
-        Employee employee = employeeService.findById(wish.getEmployeeId());
-        User user = wish.getUser();
-
-        String subject = "Required term available now!";
-
-        String body = "Witaj " + wish.getUser().getFirstName() + "! "
-                + "<br><br>"
-                + "According to your request we are happy to inform that the term you desired is now available!" +
-                "Here are some details to refresh your memory:"
-                + "<br>"
-                + "<ul>"
-                + "<li>Date: " + wish.getAppointmentDay() + "</li>"
-                + "<li>Time: " + wish.getAppointmentTime() + "</li>"
-                + "<li>Procedure: " + procedure.getName() + "</li>"
-                + "<li>Desired start time: " + wish.getAppointmentTime() + " minutes</li>"
-                + "<li>Employee: " + employee.getName() + "</li>"
-                + "</ul>"
-                + "<br>"
-                + "Hurry up, until somebody else grabs your term!"
-                + "<br>"
-                + "<br><br>"
-                + "Best regards"
-                + "<br>"
-                +" SzugajewEsthetic.";
-        emailServiceImpl.sendMail(user.getEmail(), subject, body);
+        emailServiceImpl.sendAnEmailAboutTermAvailability(wish);
     }
+
+    public boolean saveWish(Long procedureId, Long employeeId, Long scheduleId, LocalTime hour, Long userId) {
+        Schedule schedule = scheduleService.findById(scheduleId);
+        Wish wish = new Wish();
+        wish.setAppointmentDay(schedule.getDate());
+        wish.setUser(userService.findById(userId));
+        wish.setProcedureId(procedureId);
+        wish.setEmployeeId(employeeId);
+        wish.setAppointmentTime(hour);
+        wishRepository.save(wish);
+        return true;
+
+    }
+
+
 
 
 }

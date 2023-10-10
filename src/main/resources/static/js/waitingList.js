@@ -6,20 +6,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const daySelect = document.getElementById('scheduleId');
     const hourSelect = document.getElementById('hour');
 
-// Funkcja do aktualizacji listy opcji w polu wyboru
     function updateSelect(selectElement, options, selectedValue) {
-        // Wyczyść aktualne opcje
         selectElement.innerHTML = '';
 
-        // Dodaj nowe opcje
         options.forEach(option => {
             const optionElement = document.createElement('option');
             optionElement.value = option.id;
             optionElement.textContent = option.name;
 
-            // Sprawdź, czy aktualna opcja ma wartość równą selectedValue
             if (option.id === selectedValue) {
-                optionElement.selected = true; // Ustaw atrybut selected
+                optionElement.selected = true;
             }
 
             selectElement.appendChild(optionElement);
@@ -32,21 +28,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
         hours.forEach((hour) => {
             const optionElement = document.createElement('option');
-            optionElement.value = hour; // Ustawiamy wartość opcji jako indeks w tablicy
-            optionElement.textContent = hour; // Wykorzystujemy godzinę jako tekst opcji
+            optionElement.value = hour;
+            optionElement.textContent = hour;
             selectElement.appendChild(optionElement);
         });
     }
 
 
-// Pobierz listę zabiegów z serwera i zaktualizuj pole wyboru "Zabieg"
     fetch('/user/createappointment/getprocedures')
         .then(response => response.json())
         .then(procedures => {
             updateSelect(procedureSelect, procedures);
         });
 
-// Obsłuż zmianę wybranego zabiegu i pobierz listę lekarzy
     procedureSelect.addEventListener('change', () => {
         const selectedProcedureId = procedureSelect.value;
         fetch(`/user/createappointment/getemployees?procedureId=${selectedProcedureId}`)
@@ -56,7 +50,6 @@ window.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-// Obsłuż zmianę wybranego lekarza i pobierz listę dat
     doctorSelect.addEventListener('change', () => {
         const selectedEmployeeId = doctorSelect.value;
         fetch(`/user/createappointment/getdates?employeeId=${selectedEmployeeId}`)
@@ -66,7 +59,6 @@ window.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-// Obsłuż zmianę wybranej daty i pobierz listę dostępnych godzin
     daySelect.addEventListener('change', () => {
         const procedureIdx = procedureSelect.value;
         // const employeeIdx = doctorSelect.value;
@@ -85,19 +77,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 $(document).ready(function() {
     $("#reservationForm").submit(function(e) {
-        e.preventDefault(); // Przerywa domyślne zachowanie formularza
+        e.preventDefault();
 
-        // Wyślij żądanie AJAX do serwera
         $.ajax({
             type: "POST",
             url: $(this).attr("action"),
             data: $(this).serialize(),
             success: function() {
-                // Pokaż modala po pomyślnym wysłaniu danych
                 $("#successModal").modal("show");
             },
             error: function() {
-                // Obsłuż błąd żądania AJAX (opcjonalnie)
             }
         });
     });

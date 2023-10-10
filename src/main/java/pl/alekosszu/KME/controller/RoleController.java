@@ -20,7 +20,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping("/save")
-    public String save(Model model){
+    public String save(Model model) {
         model.addAttribute("role", new Role());
         return "role/save";
     }

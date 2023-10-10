@@ -35,8 +35,7 @@ public class RegistrationController {
         user.setRole(role);
         userService.registerNewUser(user);
 
-        //if register successfull
-        return "redirect:/login"; // Przekierowanie do strony logowania po rejestracji
+        return "redirect:/login";
     }
 
 

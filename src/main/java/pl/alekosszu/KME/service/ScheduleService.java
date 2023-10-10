@@ -19,6 +19,7 @@ import pl.alekosszu.KME.repository.ScheduleRepository;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +28,9 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final ProcedureService procedureService;
+    private final EmployeeService employeeService;
+    private final ScheduleService scheduleService;
 
 
     public void save(Schedule schedule) {
@@ -76,5 +80,49 @@ public class ScheduleService {
     public List<Appointment> findAppointmentsByScheduleId(@Param("scheduleId") Long scheduleId){
        return scheduleRepository.findAppointmentsByScheduleId(scheduleId);
     };
+
+    public List<LocalTime> getAvaliableHours(Long procedureId, Long employeeId, Long scheduleId){
+        Procedure procedure = procedureService.findById(procedureId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+
+
+        LocalTime employeesStartTime = schedule.getStartTime();
+        LocalTime employeesEndTime = schedule.getEndTime();
+        Duration interval = Duration.ofMinutes(30);
+
+        int durationInMinutes = procedure.getDuration();
+        Duration procedureDuration = Duration.ofMinutes(durationInMinutes);
+
+        LocalTime adjustedEndTime = employeesEndTime.minus(procedureDuration);
+
+        List<LocalTime> allAvailableHours = new ArrayList<>();
+        allAvailableHours.add(employeesStartTime);
+        LocalTime increasedTime = employeesStartTime;
+        boolean isAfterEmployeesWorkingHours = false;
+        while (!isAfterEmployeesWorkingHours) {
+            increasedTime = increasedTime.plus(interval);
+
+            boolean isDuringAppointment = false;
+            for (Appointment app : schedule.getScheduledAppointments()) {
+                LocalTime start = app.getStartTime();
+                LocalTime end = app.getEndTime();
+
+                if (start.equals(increasedTime) || (increasedTime.isAfter(start) && increasedTime.isBefore(end))) {
+                    isDuringAppointment = true;
+                    break;
+                }
+            }
+
+            if (!isDuringAppointment && !increasedTime.isAfter(adjustedEndTime)) {
+                allAvailableHours.add(increasedTime);
+            }
+
+            if (increasedTime.equals(employeesEndTime)) {
+                isAfterEmployeesWorkingHours = true;
+            }
+        }
+
+        return allAvailableHours;
+    }
 
 }

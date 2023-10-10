@@ -25,7 +25,6 @@ public class SesSecurityConfig {
 
         http.authorizeHttpRequests((authorize) -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                // ... the rest of your authorization rules
 
         );
         http

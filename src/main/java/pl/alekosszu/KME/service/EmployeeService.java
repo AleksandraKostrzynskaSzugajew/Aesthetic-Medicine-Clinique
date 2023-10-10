@@ -45,14 +45,10 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-//    @Query("select * from employees_performed_procedures where performed_procedures_id = ?1")
-//    public void findAllByProcedureId(Long id) { //moze szukac w zlej tabeli, nie tej laczonej, zapytanie w native sql?
-//    }
 
     public boolean addAppointmentToSchedule(Appointment appointment) {
         Procedure procedureToCountDuration = procedureService.findById(appointment.getProcedureId());
         Employee employee = employeeRepository.findById(appointment.getEmployeeId()).get();
-      //  List<Schedule> workdaysForEmp = scheduleService.findByEmployeeId(appointment.getEmployeeId());
 
         LocalTime empStartTime;
         LocalTime appointmentStartTime = appointment.getStartTime();
@@ -76,7 +72,6 @@ public class EmployeeService {
             if (scheduleItem.getDate().equals(appointment.getDate())) {
 
                 if (appointmentStartTime.isAfter(empStartTime) && (appointmentEndTime.isBefore(maxEndTime)))
-                //i jesli sie nie pokrywa z jakims innym
                 {
                     scheduleItem.addToScheduledAppointments(appointment);
                     System.out.println("Successfully booked");

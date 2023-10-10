@@ -32,6 +32,10 @@ public class AppointmentService {
     private final ScheduleService scheduleService;
     private final WishService wishService;
     private final AppointmentHistoryService appointmentHistoryService;
+    private final EmployeeService employeeService;
+    private final UserService userService;
+    private final ProcedureService procedureService;
+    private final AppointmentService appointmentService;
 
 
     public void save(Appointment appointment) {
@@ -81,16 +85,12 @@ public class AppointmentService {
             LocalTime startTime = appointment.getStartTime();
             LocalTime endTime = appointment.getEndTime();
 
-            // Iteruj przez godziny od startTime do endTime i dodawaj do listy takenHours
             LocalTime currentTime = startTime;
             while (currentTime.isBefore(endTime)) {
                 takenHours.add(currentTime);
                 currentTime = currentTime.plusMinutes(30);
             }
         }
-
-        System.out.println("=======================================");
-        System.out.println(takenHours);
         return takenHours;
     }
 
@@ -108,4 +108,73 @@ public class AppointmentService {
         appointmentHistoryService.save(appointmentHistory);
     }
 
+    public Appointment setAppointmentParamsAndAddToSchedule(Long procedureId, Long employeeId, Long scheduleId, LocalTime hour, Long userId) {
+        Employee employee = employeeService.findById(employeeId);
+        Appointment appointment = new Appointment();
+        appointment.setProcedureId(procedureId);
+        appointment.setEmployeeId(employeeId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        appointment.setDate(schedule.getDate());
+        appointment.setStartTime(hour);
+        Procedure procedure = procedureService.findById(procedureId);
+        appointment.setEndTime(hour.plusMinutes(procedure.getDuration()));
+        appointment.setUserId(userId);
+        appointment.setScheduleId(scheduleId);
+
+        appointment.setStatus("planned");
+        appointmentService.save(appointment);
+        appointmentService.addToHistory(appointment);
+
+        employeeService.addAppointmentToSchedule(appointment);
+        return appointment;
+    }
+
+    public void cancelAppointment(Long appointmentId) {
+        Appointment appointment = appointmentService.findById(appointmentId);
+        Long loggedUserId = userService.getCurrentUser();
+
+
+        Long employeeId = appointment.getEmployeeId();
+        Employee employee = employeeService.findById(employeeId);
+
+        if (appointment.getUserId() == loggedUserId) {
+            for (Schedule s : employee.getSchedule()) {
+                if (s.getScheduledAppointments().contains(appointment)) {
+                    s.removeFromScheduledAppointments(appointment);
+                    appointmentService.deleteById(appointmentId);
+                    if (appointment.getStatus().equals("planned")) {
+                        appointment.setStatus("canceled");
+                        appointmentService.save(appointment);
+                        Collection<Wish> wishes = wishService.findIfSimilarRequestExists(appointment);
+                        for (Wish w : wishes) {
+                            wishService.sendAnEmailAboutTermAvailability(w);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    public void removeAppointment(Long employeeId,Long scheduleId, Long appointmentId){
+        Employee employee = employeeService.findById(employeeId);
+        Schedule schedule = scheduleService.findById(scheduleId);
+        Appointment appointment = appointmentService.findById(appointmentId);
+
+        for (Schedule s : employee.getSchedule()) {
+            if (s.getScheduledAppointments().contains(appointment)) {
+                s.removeFromScheduledAppointments(appointment);
+                appointmentService.deleteById(appointmentId);
+                if (appointment.getStatus().equals("planned")) {
+                    appointment.setStatus("canceled");
+                    appointmentService.save(appointment);
+                    Collection<Wish> wishes = wishService.findIfSimilarRequestExists(appointment);
+                    for (Wish w : wishes) {
+                        wishService.sendAnEmailAboutTermAvailability(w);
+                    }
+                }
+            }
+
+        }
+    }
 }

@@ -98,9 +98,6 @@ public class EmployeeController {
         Employee employee = employeeService.findById(employeeId);
         Schedule schedule = scheduleService.findById(scheduleId);
         employee.removeScheduleItem(schedule);
-        System.out.println("===================================");
-        System.out.println("removed");
-        System.out.println("===================================");
         return "employee/list";
     }
 

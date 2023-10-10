@@ -22,8 +22,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final ProcedureService procedureService;
-    private final EmployeeService employeeService;
     private final RoleService roleService;
 
 
@@ -93,16 +91,16 @@ public class UserController {
 
     @GetMapping("/editmydata")
     public String editMyData(Model model, Principal principal) {
-        String username = principal.getName(); // Pobierz nazwę zalogowanego użytkownika
-        User user = userService.findByEmail(username); // Pobierz użytkownika na podstawie emaila użytkownika
+        String username = principal.getName();
+        User user = userService.findByEmail(username);
         model.addAttribute("user", user);
         return "user/edituser";
     }
 
     @GetMapping("/displayme")
     public String displayMyData(Model model, Principal principal) {
-        String username = principal.getName(); // Pobierz nazwę zalogowanego użytkownika
-        User user = userService.findByEmail(username); // Pobierz użytkownika na podstawie emaila użytkownika
+        String username = principal.getName();
+        User user = userService.findByEmail(username);
         String dobString = user.getDob().toString();
         model.addAttribute("dobString", dobString);
         model.addAttribute("user", user);
@@ -111,7 +109,7 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String getUserToHisHomepage(){
+    public String getUserToHisHomepage() {
         return "user/home";
     }
 
